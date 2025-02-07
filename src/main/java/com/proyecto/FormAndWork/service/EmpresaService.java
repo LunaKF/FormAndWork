@@ -25,19 +25,22 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio"};
 
 
-    private String[] arrSectores = {"Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías", 
+        @Autowired
+        SectorService oSectorService;
+
+    /*private String[] arrSectores = {"Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías", 
         "Comercio y marketing", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", 
         "Hostelería y turismo", "Imagen personal", "Imagen y sonido", "Informática y comunicaciones", 
         "Instalación y mantenimiento", "Madera, mueble y corcho", "Marítimo-pesquera", "Química", 
         "Sanidad", "Seguridad y medio ambiente", "Servicios socioculturales y a la comunidad", 
         "Textil, confección y piel", "Transporte y mantenimiento de vehículos", "Vidrio y cerámica"};
-
+*/
 
     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
             EmpresaEntity oEmpresaEntity = new EmpresaEntity();
             oEmpresaEntity.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
-            oEmpresaEntity.setSector(arrSectores[oRandomService.getRandomInt(0, arrSectores.length - 1)]);
+            oEmpresaEntity.setSector(oSectorService.randomSelection());
             oEmpresaEntity.setEmail("email" + oEmpresaEntity.getNombre() + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
             oEmpresaRepository.save(oEmpresaEntity);
         }
@@ -77,9 +80,6 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         EmpresaEntity oEmpresaEntityFromDatabase = oEmpresaRepository.findById(oEmpresaEntity.getId()).get();
         if (oEmpresaEntity.getNombre() != null) {
             oEmpresaEntityFromDatabase.setNombre(oEmpresaEntity.getNombre());
-        }
-        if (oEmpresaEntity.getSector() != null) {
-            oEmpresaEntityFromDatabase.setSector(oEmpresaEntity.getSector());
         }
         if (oEmpresaEntity.getEmail() != null) {
             oEmpresaEntityFromDatabase.setEmail(oEmpresaEntity.getEmail());

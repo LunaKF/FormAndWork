@@ -1,5 +1,4 @@
 package com.proyecto.FormAndWork.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +28,13 @@ public class EmpresaEntity {
 
     @NotNull
     @Size(min = 3, max = 255)
-    private String sector;
+    private SectorEntity sector;
+
+
+   /*@ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "id_sector")
+    private SectorEntity sector;
+ */ 
 
     @Email
     private String email;
@@ -38,13 +43,13 @@ public class EmpresaEntity {
     public EmpresaEntity() {
     }
 
-    public EmpresaEntity(String nombre, String apellido1, String sector, String email) {
+    public EmpresaEntity(String nombre, String apellido1, SectorEntity sector, String email) {
         this.nombre = nombre;
         this.sector = sector;
         this.email = email;
     }
 
-    public EmpresaEntity(Long id, String nombre, String apellido1, String sector, String email) {
+    public EmpresaEntity(Long id, String nombre, String apellido1, SectorEntity sector, String email) {
         this.id = id;
         this.nombre = nombre;
         this.sector = sector;
@@ -67,11 +72,11 @@ public class EmpresaEntity {
         this.nombre = nombre;
     }
 
-    public String getSector() {
+    public SectorEntity sector() {
         return sector;
     }
 
-    public void setSector(String sector) {
+    public void setSector(SectorEntity sector) {
         this.sector = sector;
     }
 
