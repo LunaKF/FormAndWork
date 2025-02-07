@@ -13,6 +13,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+
+/*ACUERDATE DE CAMBIAR EL TIPO DE SECTOR DE STRING A sectorentity */
 @Entity
 @Table(name = "empresa")
 public class EmpresaEntity {

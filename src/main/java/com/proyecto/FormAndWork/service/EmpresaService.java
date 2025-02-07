@@ -24,8 +24,6 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
         "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio"};
 
-    private String[] arrApellidos = {"Sancho", "Gomez", "Pérez", "Rodriguez", "Garcia", "Fernandez", "Lopez",
-        "Martinez", "Sanchez", "Gonzalez", "Gimenez", "Feliu", "Gonzalez", "Hermoso", "Vidal", "Escriche", "Moreno"};
 
     private String[] arrSectores = {"Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías", 
         "Comercio y marketing", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", 
