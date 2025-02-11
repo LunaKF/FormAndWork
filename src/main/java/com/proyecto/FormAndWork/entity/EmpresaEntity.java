@@ -26,15 +26,10 @@ public class EmpresaEntity {
     @Size(min = 3, max = 255)
     private String nombre;
 
-    @NotNull
-    @Size(min = 3, max = 255)
+   @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "sector")
     private SectorEntity sector;
-
-
-   /*@ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
-    @JoinColumn(name = "id_sector")
-    private SectorEntity sector;
- */ 
+ 
 
     @Email
     private String email;
