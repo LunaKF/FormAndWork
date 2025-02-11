@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 16-01-2025 a las 19:03:02
+-- Tiempo de generación: 05-02-2025 a las 15:39:22
 -- Versión del servidor: 8.4.3
 -- Versión de PHP: 8.2.24
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Alumnos`
+-- Estructura de tabla para la tabla `alumno`
 --
 
-CREATE TABLE `Alumnos` (
+CREATE TABLE `alumno` (
   `id` bigint NOT NULL,
   `nombre` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
@@ -37,10 +37,10 @@ CREATE TABLE `Alumnos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Candidaturas`
+-- Estructura de tabla para la tabla `candidatura`
 --
 
-CREATE TABLE `Candidaturas` (
+CREATE TABLE `candidatura` (
   `idAlumno` int NOT NULL,
   `idOferta` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
@@ -58,17 +58,35 @@ CREATE TABLE `empresa` (
   `sector` varchar(255) COLLATE utf32_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `empresa`
+--
+
+INSERT INTO `empresa` (`id`, `nombre`, `email`, `sector`) VALUES
+(1, 'EmpresaEjemplo', 'EmpresaEjemplo@gmail.com', 'ADMINISTRACIÓN Y GESTIÓN');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Ofertas`
+-- Estructura de tabla para la tabla `oferta`
 --
 
-CREATE TABLE `Ofertas` (
+CREATE TABLE `oferta` (
   `Titulo` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
   `Descripcion` varchar(555) COLLATE utf32_unicode_ci NOT NULL,
   `IdEmpresa` int NOT NULL,
   `IdOferta` bigint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sector`
+--
+
+CREATE TABLE `sector` (
+  `id` bigint NOT NULL,
+  `nombre` varchar(255) COLLATE utf32_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
@@ -76,15 +94,15 @@ CREATE TABLE `Ofertas` (
 --
 
 --
--- Indices de la tabla `Alumnos`
+-- Indices de la tabla `alumno`
 --
-ALTER TABLE `Alumnos`
+ALTER TABLE `alumno`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `Candidaturas`
+-- Indices de la tabla `candidatura`
 --
-ALTER TABLE `Candidaturas`
+ALTER TABLE `candidatura`
   ADD PRIMARY KEY (`idAlumno`,`idOferta`);
 
 --
@@ -94,32 +112,44 @@ ALTER TABLE `empresa`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `Ofertas`
+-- Indices de la tabla `oferta`
 --
-ALTER TABLE `Ofertas`
+ALTER TABLE `oferta`
   ADD PRIMARY KEY (`IdOferta`);
+
+--
+-- Indices de la tabla `sector`
+--
+ALTER TABLE `sector`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `Alumnos`
+-- AUTO_INCREMENT de la tabla `alumno`
 --
-ALTER TABLE `Alumnos`
+ALTER TABLE `alumno`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `Ofertas`
+-- AUTO_INCREMENT de la tabla `oferta`
 --
-ALTER TABLE `Ofertas`
+ALTER TABLE `oferta`
   MODIFY `IdOferta` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `sector`
+--
+ALTER TABLE `sector`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
