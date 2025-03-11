@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 11-03-2025 a las 14:16:18
+-- Tiempo de generación: 11-03-2025 a las 15:39:24
 -- Versión del servidor: 8.4.3
 -- Versión de PHP: 8.2.24
 
@@ -55,7 +55,7 @@ CREATE TABLE `empresa` (
   `id` bigint NOT NULL,
   `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `sector` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL
+  `sector` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
@@ -63,9 +63,14 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`id`, `nombre`, `email`, `sector`) VALUES
-(1, 'EmpresaEjemplo', 'EmpresaEjemplo@gmail.com', '1'),
-(2, 'EMPRESA', 'AAAA@AAAA', '2'),
-(3, 'prueba', 'hola@gmail.com', '7');
+(1, 'EmpresaEjemplo', 'EmpresaEjemplo@gmail.com', 1),
+(2, 'EMPRESA', 'AAAA@AAAA', 2),
+(3, 'prueba', 'hola@gmail.com', 7),
+(22, '4cuatro', '4cuatro@gmail.com', 4),
+(23, '5co', 'lunakhanjifustek@gmail.com', 5),
+(24, 'pruebaluna', 'lupruebak@gmail.com', 8),
+(25, 'prueba16:13', '1613luna@gmail.com', 10),
+(26, 'SDFLKJASHKF', 'lunakhanjifustek@gmail.com', 6);
 
 -- --------------------------------------------------------
 
@@ -167,7 +172,7 @@ ALTER TABLE `alumno`
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `oferta`

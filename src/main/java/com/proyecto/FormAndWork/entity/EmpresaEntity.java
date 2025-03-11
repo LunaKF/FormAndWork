@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 
-/*ACUERDATE DE CAMBIAR EL TIPO DE SECTOR DE STRING A sectorentity */
 @Entity
 @Table(name = "empresa")
 public class EmpresaEntity {
@@ -67,7 +66,7 @@ public class EmpresaEntity {
         this.nombre = nombre;
     }
 
-    public SectorEntity sector() {
+    public SectorEntity getSector() {
         return sector;
     }
 
