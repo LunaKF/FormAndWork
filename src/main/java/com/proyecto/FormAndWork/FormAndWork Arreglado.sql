@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: database:3306
--- Tiempo de generación: 11-03-2025 a las 15:39:24
+-- Tiempo de generación: 25-03-2025 a las 15:59:30
 -- Versión del servidor: 8.4.3
 -- Versión de PHP: 8.2.24
 
@@ -30,8 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `alumno` (
   `id` bigint NOT NULL,
   `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `ape1` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
+  `ape2` varchar(255) COLLATE utf32_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `sector` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL
+  `id_sector` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 -- --------------------------------------------------------
@@ -41,8 +43,10 @@ CREATE TABLE `alumno` (
 --
 
 CREATE TABLE `candidatura` (
-  `idAlumno` int NOT NULL,
-  `idOferta` int NOT NULL
+  `id` bigint NOT NULL,
+  `id_alumno` bigint NOT NULL,
+  `id_oferta` bigint NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 -- --------------------------------------------------------
@@ -55,22 +59,20 @@ CREATE TABLE `empresa` (
   `id` bigint NOT NULL,
   `nombre` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `sector` bigint NOT NULL
+  `id_sector` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `empresa`
 --
 
-INSERT INTO `empresa` (`id`, `nombre`, `email`, `sector`) VALUES
+INSERT INTO `empresa` (`id`, `nombre`, `email`, `id_sector`) VALUES
 (1, 'EmpresaEjemplo', 'EmpresaEjemplo@gmail.com', 1),
 (2, 'EMPRESA', 'AAAA@AAAA', 2),
 (3, 'prueba', 'hola@gmail.com', 7),
-(22, '4cuatro', '4cuatro@gmail.com', 4),
 (23, '5co', 'lunakhanjifustek@gmail.com', 5),
 (24, 'pruebaluna', 'lupruebak@gmail.com', 8),
-(25, 'prueba16:13', '1613luna@gmail.com', 10),
-(26, 'SDFLKJASHKF', 'lunakhanjifustek@gmail.com', 6);
+(25, 'prueba16:13', '1613luna@gmail.com', 10);
 
 -- --------------------------------------------------------
 
@@ -79,10 +81,11 @@ INSERT INTO `empresa` (`id`, `nombre`, `email`, `sector`) VALUES
 --
 
 CREATE TABLE `oferta` (
-  `Titulo` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `Descripcion` varchar(555) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `IdEmpresa` int NOT NULL,
-  `IdOferta` bigint NOT NULL
+  `id` bigint NOT NULL,
+  `titulo` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `descripcion` varchar(555) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `id_empresa` bigint NOT NULL,
+  `id_sector` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 -- --------------------------------------------------------
@@ -138,7 +141,7 @@ ALTER TABLE `alumno`
 -- Indices de la tabla `candidatura`
 --
 ALTER TABLE `candidatura`
-  ADD PRIMARY KEY (`idAlumno`,`idOferta`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `empresa`
@@ -150,7 +153,7 @@ ALTER TABLE `empresa`
 -- Indices de la tabla `oferta`
 --
 ALTER TABLE `oferta`
-  ADD PRIMARY KEY (`IdOferta`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `sector`
@@ -169,6 +172,12 @@ ALTER TABLE `alumno`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `candidatura`
+--
+ALTER TABLE `candidatura`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
@@ -178,7 +187,7 @@ ALTER TABLE `empresa`
 -- AUTO_INCREMENT de la tabla `oferta`
 --
 ALTER TABLE `oferta`
-  MODIFY `IdOferta` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `sector`
