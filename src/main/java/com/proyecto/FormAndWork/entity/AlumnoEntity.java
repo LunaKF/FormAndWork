@@ -14,8 +14,8 @@ import jakarta.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "empresa")
-public class EmpresaEntity {
+@Table(name = "alumno")
+public class AlumnoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +34,16 @@ public class EmpresaEntity {
     private String email;
 
 
-    public EmpresaEntity() {
+    public AlumnoEntity() {
     }
 
-    public EmpresaEntity(String nombre, SectorEntity sector, String email) {
+    public AlumnoEntity(String nombre, SectorEntity sector, String email) {
         this.nombre = nombre;
         this.sector = sector;
         this.email = email;
     }
 
-    public EmpresaEntity(Long id, String nombre, SectorEntity sector, String email) {
+    public AlumnoEntity(Long id, String nombre, SectorEntity sector, String email) {
         this.id = id;
         this.nombre = nombre;
         this.sector = sector;
