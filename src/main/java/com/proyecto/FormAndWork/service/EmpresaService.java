@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +94,14 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     }
 
     public EmpresaEntity randomSelection() {
-        return oEmpresaRepository.findById((long) oRandomService.getRandomInt(1, (int) (long) this.count())).get();
+        List<Long> listaIds = oEmpresaRepository.findAllIds(); //  método para obtener los IDs añadido en el repository
+        if (listaIds.isEmpty()) {
+            throw new ResourceNotFoundException("No hay empresas disponibles para selección aleatoria");
+        }
+        Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
+        return oEmpresaRepository.findById(idAleatorio).orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
     }
+    
 
    
 }

@@ -1,6 +1,8 @@
 package com.proyecto.FormAndWork.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +14,12 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Long> {
 
     Page<EmpresaEntity> findByNombreContainingOrSectorContainingOrEmailContaining(
             String filter2, String filter3, String filter4, Pageable oPageable);
-/*
+
+
+            @Query("SELECT e.id FROM EmpresaEntity e")
+            List<Long> findAllIds();
+            
+            /*
     @Query(value = "SELECT COUNT(*) FROM asiento, apunte WHERE asiento.id_usuario=:id AND apunte.id_asiento=asiento.id", nativeQuery = true)
     Long getApuntes(Long id);
 
