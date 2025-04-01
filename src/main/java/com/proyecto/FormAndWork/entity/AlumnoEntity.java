@@ -1,4 +1,5 @@
 package com.proyecto.FormAndWork.entity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 
 @Entity
 @Table(name = "alumno")
@@ -33,14 +33,12 @@ public class AlumnoEntity {
     @Size(min = 3, max = 255)
     private String ape2;
 
-   @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
- 
 
     @Email
     private String email;
-
 
     public AlumnoEntity() {
     }
@@ -104,10 +102,10 @@ public class AlumnoEntity {
 
     public String getApe2() {
         return ape2;
-    }    
+    }
 
     public void setApe2(String ape2) {
         this.ape2 = ape2;
     }
-    
+
 }

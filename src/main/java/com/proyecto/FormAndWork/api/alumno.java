@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import com.proyecto.FormAndWork.service.AlumnoService;
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
 
-
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/alumno")
@@ -33,14 +32,23 @@ public class alumno {
     @GetMapping("")
     public ResponseEntity<Page<AlumnoEntity>> getPage(
             Pageable oPageable,
-            @RequestParam  Optional<String> filter) {
+            @RequestParam Optional<String> filter) {
         return new ResponseEntity<Page<AlumnoEntity>>(oAlumnoService.getPage(oPageable, filter), HttpStatus.OK);
+    }
+
+    @GetMapping("xsector/{id}")
+    public ResponseEntity<Page<AlumnoEntity>> getPageXsector(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<Page<AlumnoEntity>>(oAlumnoService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AlumnoEntity> getAlumno(@PathVariable Long id) {
         return new ResponseEntity<AlumnoEntity>(oAlumnoService.get(id), HttpStatus.OK);
-    }   
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oAlumnoService.count(), HttpStatus.OK);

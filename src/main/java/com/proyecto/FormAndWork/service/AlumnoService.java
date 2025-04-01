@@ -11,7 +11,6 @@ import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.repository.AlumnoRepository;
 import com.proyecto.FormAndWork.exception.*;
 
-
 @Service
 public class AlumnoService implements ServiceInterface<AlumnoEntity> {
 
@@ -21,13 +20,14 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     @Autowired
     RandomService oRandomService;
 
-    private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-        "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio"};
+    private String[] arrNombres = { "Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
+            "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio" };
 
-        private String[] arrApellidos = {"Sancho", "Gomez", "Pérez", "Rodriguez", "Garcia", "Fernandez", "Lopez",
-        "Martinez", "Sanchez", "Gonzalez", "Gimenez", "Feliu", "Gonzalez", "Hermoso", "Vidal", "Escriche", "Moreno"};
-        @Autowired
-        SectorService oSectorService;
+    private String[] arrApellidos = { "Sancho", "Gomez", "Pérez", "Rodriguez", "Garcia", "Fernandez", "Lopez",
+            "Martinez", "Sanchez", "Gonzalez", "Gimenez", "Feliu", "Gonzalez", "Hermoso", "Vidal", "Escriche",
+            "Moreno" };
+    @Autowired
+    SectorService oSectorService;
 
     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
@@ -36,7 +36,8 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
             oAlumnoEntity.setApe1(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
             oAlumnoEntity.setApe2(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
             oAlumnoEntity.setSector(oSectorService.randomSelection());
-            oAlumnoEntity.setEmail("email" + oAlumnoEntity.getNombre() + oAlumnoEntity.getApe1()+oRandomService.getRandomInt(999, 9999) + "@gmail.com");
+            oAlumnoEntity.setEmail("email" + oAlumnoEntity.getNombre() + oAlumnoEntity.getApe1()
+                    + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
             oAlumnoRepository.save(oAlumnoEntity);
         }
         return oAlumnoRepository.count();
@@ -49,6 +50,15 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
                     filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oAlumnoRepository.findAll(oPageable);
+        }
+    }
+
+    public Page<AlumnoEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
+        if (filter.isPresent()) {
+            return oAlumnoRepository.findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+                    filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
+        } else {
+            return oAlumnoRepository.findBySectorId(oPageable, id_sector);
         }
     }
 
@@ -97,5 +107,4 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
         return oAlumnoRepository.findById((long) oRandomService.getRandomInt(1, (int) (long) this.count())).get();
     }
 
-   
 }

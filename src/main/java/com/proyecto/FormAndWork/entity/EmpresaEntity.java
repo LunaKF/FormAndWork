@@ -1,4 +1,5 @@
 package com.proyecto.FormAndWork.entity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-
 @Entity
 @Table(name = "empresa")
 public class EmpresaEntity {
@@ -25,14 +25,12 @@ public class EmpresaEntity {
     @Size(min = 3, max = 255)
     private String nombre;
 
-   @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
- 
 
     @Email
     private String email;
-
 
     public EmpresaEntity() {
     }
@@ -81,5 +79,5 @@ public class EmpresaEntity {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
 }

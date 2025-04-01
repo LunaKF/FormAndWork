@@ -27,7 +27,15 @@ public class SectorEntity {
     @OneToMany(mappedBy = "sector", fetch = FetchType.LAZY)
     private java.util.List<EmpresaEntity> empresa;
 
+    
+    @OneToMany(mappedBy = "sector", fetch = FetchType.LAZY)
+    private java.util.List<AlumnoEntity> alumno;
+
+
+
     public SectorEntity() {
+        empresa = new java.util.ArrayList<>();
+        alumno = new java.util.ArrayList<>();
     }
 
     public SectorEntity(String nombre) {
@@ -35,7 +43,7 @@ public class SectorEntity {
 
     }
 
-    public SectorEntity(Long id, String nombre ) {
+    public SectorEntity(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
 
@@ -57,10 +65,16 @@ public class SectorEntity {
         this.nombre = nombre;
     }
 
-/* si empresa es null, la función devolverá 0 en lugar de intentar llamar a size(), evitando el error. */    
-public int getEmpresas() {
+    /*
+     * si empresa es null, la función devolverá 0 en lugar de intentar llamar a
+     * size(), evitando el error.
+     */
+    public int getEmpresas() {
         return (empresa != null) ? empresa.size() : 0;
     }
-    
-    
+
+    public int getAlumnos() {
+        return (alumno != null) ? alumno.size() : 0;
+    }
+
 }
