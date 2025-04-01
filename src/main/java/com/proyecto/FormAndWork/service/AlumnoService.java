@@ -24,7 +24,8 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
         "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio"};
 
-
+        private String[] arrApellidos = {"Sancho", "Gomez", "Pérez", "Rodriguez", "Garcia", "Fernandez", "Lopez",
+        "Martinez", "Sanchez", "Gonzalez", "Gimenez", "Feliu", "Gonzalez", "Hermoso", "Vidal", "Escriche", "Moreno"};
         @Autowired
         SectorService oSectorService;
 
@@ -32,8 +33,10 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
         for (int i = 0; i < cantidad; i++) {
             AlumnoEntity oAlumnoEntity = new AlumnoEntity();
             oAlumnoEntity.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
+            oAlumnoEntity.setApe1(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
+            oAlumnoEntity.setApe2(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
             oAlumnoEntity.setSector(oSectorService.randomSelection());
-            oAlumnoEntity.setEmail("email" + oAlumnoEntity.getNombre() + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
+            oAlumnoEntity.setEmail("email" + oAlumnoEntity.getNombre() + oAlumnoEntity.getApe1()+oRandomService.getRandomInt(999, 9999) + "@gmail.com");
             oAlumnoRepository.save(oAlumnoEntity);
         }
         return oAlumnoRepository.count();
@@ -42,8 +45,8 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     public Page<AlumnoEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
         if (filter.isPresent()) {
-            return oAlumnoRepository.findByNombreContainingOrSectorContainingOrEmailContaining(
-                    filter.get(), filter.get(), filter.get(), oPageable);
+            return oAlumnoRepository.findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+                    filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oAlumnoRepository.findAll(oPageable);
         }
@@ -72,6 +75,12 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
         AlumnoEntity oAlumnoEntityFromDatabase = oAlumnoRepository.findById(oAlumnoEntity.getId()).get();
         if (oAlumnoEntity.getNombre() != null) {
             oAlumnoEntityFromDatabase.setNombre(oAlumnoEntity.getNombre());
+        }
+        if (oAlumnoEntity.getApe1() != null) {
+            oAlumnoEntityFromDatabase.setApe1(oAlumnoEntity.getApe1());
+        }
+        if (oAlumnoEntity.getApe2() != null) {
+            oAlumnoEntityFromDatabase.setApe2(oAlumnoEntity.getApe2());
         }
         if (oAlumnoEntity.getEmail() != null) {
             oAlumnoEntityFromDatabase.setEmail(oAlumnoEntity.getEmail());

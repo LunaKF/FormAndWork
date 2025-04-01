@@ -26,7 +26,7 @@ public class EmpresaEntity {
     private String nombre;
 
    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
-    @JoinColumn(name = "sector")
+    @JoinColumn(name = "id_sector")
     private SectorEntity sector;
  
 

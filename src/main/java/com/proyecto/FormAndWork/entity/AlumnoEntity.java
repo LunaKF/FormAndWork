@@ -25,8 +25,16 @@ public class AlumnoEntity {
     @Size(min = 3, max = 255)
     private String nombre;
 
+    @NotNull
+    @Size(min = 3, max = 255)
+    private String ape1;
+
+    @NotNull
+    @Size(min = 3, max = 255)
+    private String ape2;
+
    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
-    @JoinColumn(name = "sector")
+    @JoinColumn(name = "id_sector")
     private SectorEntity sector;
  
 
@@ -37,15 +45,19 @@ public class AlumnoEntity {
     public AlumnoEntity() {
     }
 
-    public AlumnoEntity(String nombre, SectorEntity sector, String email) {
+    public AlumnoEntity(String nombre, SectorEntity sector, String ape1, String ape2, String email) {
         this.nombre = nombre;
         this.sector = sector;
+        this.ape1 = ape1;
+        this.ape2 = ape2;
         this.email = email;
     }
 
-    public AlumnoEntity(Long id, String nombre, SectorEntity sector, String email) {
+    public AlumnoEntity(Long id, String nombre, String ape1, String ape2, SectorEntity sector, String email) {
         this.id = id;
         this.nombre = nombre;
+        this.ape1 = ape1;
+        this.ape2 = ape2;
         this.sector = sector;
         this.email = email;
     }
@@ -80,6 +92,22 @@ public class AlumnoEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getApe1() {
+        return ape1;
+    }
+
+    public void setApe1(String ape1) {
+        this.ape1 = ape1;
+    }
+
+    public String getApe2() {
+        return ape2;
+    }    
+
+    public void setApe2(String ape2) {
+        this.ape2 = ape2;
     }
     
 }
