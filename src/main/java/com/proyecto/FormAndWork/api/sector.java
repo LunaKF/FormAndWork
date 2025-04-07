@@ -72,4 +72,9 @@ public ResponseEntity<List<SectorEntity>> getAll() {
         return new ResponseEntity<Long>(oSectorService.deleteAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<SectorEntity>> getAll() {
+    return new ResponseEntity<>(oSectorService.getAllOrdered(), HttpStatus.OK);
+}
+
 }

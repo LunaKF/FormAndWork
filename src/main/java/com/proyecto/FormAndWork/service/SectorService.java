@@ -42,6 +42,10 @@ public class SectorService implements ServiceInterface<SectorEntity> {
         // return oSectorRepository.findById(id).get();
     }
 
+    public List<SectorEntity> getAllOrdered() {
+        return oSectorRepository.findAllByOrderByIdAsc();
+    }
+
     public Long count() {
         return oSectorRepository.count();
     }
