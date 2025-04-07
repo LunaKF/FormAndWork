@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,10 @@ public class sector {
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oSectorService.deleteAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SectorEntity>> getAll() {
+    return new ResponseEntity<>(oSectorService.getAllOrdered(), HttpStatus.OK);
+}
 
 }

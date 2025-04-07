@@ -1,6 +1,8 @@
 package com.proyecto.FormAndWork.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,9 @@ public interface SectorRepository extends JpaRepository<SectorEntity, Long> {
 
     Page<SectorEntity> findByNombreContaining(
             String filter,Pageable oPageable);
+
+
+    List<SectorEntity> findAllByOrderByIdAsc();
 /*
     @Query(value = "SELECT COUNT(*) FROM asiento, apunte WHERE asiento.id_usuario=:id AND apunte.id_asiento=asiento.id", nativeQuery = true)
     Long getApuntes(Long id);

@@ -12,7 +12,6 @@ import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.repository.EmpresaRepository;
 import com.proyecto.FormAndWork.exception.*;
 
-
 @Service
 public class EmpresaService implements ServiceInterface<EmpresaEntity> {
 
@@ -22,32 +21,80 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     @Autowired
     RandomService oRandomService;
 
-    private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-        "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio"};
+ 
+    private String[] arrNombresEmpresa = {
+            "GlobalTech", "Innova Solutions", "NextGen", "SmartSystems", "BlueWave",
+            "RedFox", "GreenEnergy", "CyberNet", "FutureVision", "CloudWorks",
+            "DataMind", "OpenWay", "QuantumSoft", "NeuralCode", "EcoLogic", "SecureSys"
+    };
 
+    private String[] arrNombresPropios = {
+            "Antonio López", "María Fernández", "Carlos Ortega", "Laura Martínez",
+            "Fernando García", "Sofía Pérez", "Javier Herrera", "Carmen Gutiérrez",
+            "Raúl Sánchez", "Beatriz Jiménez", "José Manuel Díaz", "Andrea Torres",
+            "Pedro Navarro", "Marta Ruiz", "Alejandro Castro", "Lucía Moreno"
+    };
 
-        @Autowired
-        SectorService oSectorService;
+    private String[] arrTiposEmpresa = {
+            "S.A.", "S.L.", "Cooperativa", "Group", "Holding", "Corp.", "Partners", "Consulting"
+    };
 
-    /*private String[] arrSectores = {"Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías", 
-        "Comercio y marketing", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", 
-        "Hostelería y turismo", "Imagen personal", "Imagen y sonido", "Informática y comunicaciones", 
-        "Instalación y mantenimiento", "Madera, mueble y corcho", "Marítimo-pesquera", "Química", 
-        "Sanidad", "Seguridad y medio ambiente", "Servicios socioculturales y a la comunidad", 
-        "Textil, confección y piel", "Transporte y mantenimiento de vehículos", "Vidrio y cerámica"};
-*/
+    @Autowired
+    SectorService oSectorService;
 
-    public Long randomCreate(Long cantidad) {
+    /*
+     * private String[] arrSectores = {"Administración y gestión", "Agraria",
+     * "Artes gráficas", "Artes y artesanías",
+     * "Comercio y marketing", "Electricidad y electrónica", "Energía y agua",
+     * "Fabricación mecánica",
+     * "Hostelería y turismo", "Imagen personal", "Imagen y sonido",
+     * "Informática y comunicaciones",
+     * "Instalación y mantenimiento", "Madera, mueble y corcho",
+     * "Marítimo-pesquera", "Química",
+     * "Sanidad", "Seguridad y medio ambiente",
+     * "Servicios socioculturales y a la comunidad",
+     * "Textil, confección y piel", "Transporte y mantenimiento de vehículos",
+     * "Vidrio y cerámica"};
+     */
+
+     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
             EmpresaEntity oEmpresaEntity = new EmpresaEntity();
-            oEmpresaEntity.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
+    
+            // Generar un nombre aleatorio de empresa
+            if (oRandomService.getRandomInt(0, 1) == 0) {
+                oEmpresaEntity.setNombre(arrNombresEmpresa[oRandomService.getRandomInt(0, arrNombresEmpresa.length - 1)] + " " +
+                                         arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]);
+            } else {
+                oEmpresaEntity.setNombre(arrNombresPropios[oRandomService.getRandomInt(0, arrNombresPropios.length - 1)] + " " +
+                                         arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]);
+            }
+    
+            // Asignar un sector aleatorio
             oEmpresaEntity.setSector(oSectorService.randomSelection());
-            oEmpresaEntity.setEmail("email" + oEmpresaEntity.getNombre() + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
+    
+            // Obtener las primeras 3 letras del nombre, asegurando que sean válidas
+            String nombreCorto = oEmpresaEntity.getNombre().trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+    
+            // Si el nombre tiene menos de 3 caracteres, rellenarlo con "xyz"
+            if (nombreCorto.length() < 3) {
+                nombreCorto = (nombreCorto + "xyz").substring(0, 3);
+            } else {
+                nombreCorto = nombreCorto.substring(0, 3);
+            }
+    
+            // Generar un email válido
+            oEmpresaEntity.setEmail(
+                "email" + nombreCorto + oRandomService.getRandomInt(1000, 9999) + "@gmail.com"
+            );
+    
+            // Guardar la entidad en la base de datos
             oEmpresaRepository.save(oEmpresaEntity);
         }
+    
         return oEmpresaRepository.count();
     }
-
+    
     public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
         if (filter.isPresent()) {
@@ -94,14 +141,13 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     }
 
     public EmpresaEntity randomSelection() {
-        List<Long> listaIds = oEmpresaRepository.findAllIds(); //  método para obtener los IDs añadido en el repository
+        List<Long> listaIds = oEmpresaRepository.findAllIds(); // método para obtener los IDs añadido en el repository
         if (listaIds.isEmpty()) {
             throw new ResourceNotFoundException("No hay empresas disponibles para selección aleatoria");
         }
         Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
-        return oEmpresaRepository.findById(idAleatorio).orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+        return oEmpresaRepository.findById(idAleatorio)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
     }
-    
 
-   
 }

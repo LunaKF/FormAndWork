@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class SectorService implements ServiceInterface<SectorEntity> {
         return oSectorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sector no encontrado"));
         // return oSectorRepository.findById(id).get();
+    }
+
+    public List<SectorEntity> getAllOrdered() {
+        return oSectorRepository.findAllByOrderByIdAsc();
     }
 
     public Long count() {
