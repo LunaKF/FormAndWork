@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class SectorService implements ServiceInterface<SectorEntity> {
             return oSectorRepository.findAll(oPageable);
         }
     }
+
+    public List<SectorEntity> getAll() {
+        return oSectorRepository.findAll(); 
+    }
+    
 
     public SectorEntity get(Long id) {
         return oSectorRepository.findById(id)

@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,19 @@ public class sector {
     @Autowired
     SectorService oSectorService;
 
+
+    @GetMapping("/all")
+public ResponseEntity<List<SectorEntity>> getAll() {
+    return new ResponseEntity<>(oSectorService.getAll(), HttpStatus.OK);
+}
+
     @GetMapping("")
     public ResponseEntity<Page<SectorEntity>> getPage(
             Pageable oPageable,
             @RequestParam  Optional<String> filter) {
         return new ResponseEntity<Page<SectorEntity>>(oSectorService.getPage(oPageable, filter), HttpStatus.OK);
     }
-
+ 
     @GetMapping("/{id}")
     public ResponseEntity<SectorEntity> getSector(@PathVariable Long id) {
         return new ResponseEntity<SectorEntity>(oSectorService.get(id), HttpStatus.OK);
@@ -60,7 +67,6 @@ public class sector {
     public ResponseEntity<SectorEntity> update(@RequestBody SectorEntity oSectorEntity) {
         return new ResponseEntity<SectorEntity>(oSectorService.update(oSectorEntity), HttpStatus.OK);
     }
-
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oSectorService.deleteAll(), HttpStatus.OK);

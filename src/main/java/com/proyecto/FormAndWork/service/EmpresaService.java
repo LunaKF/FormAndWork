@@ -29,14 +29,6 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         @Autowired
         SectorService oSectorService;
 
-    /*private String[] arrSectores = {"Administración y gestión", "Agraria", "Artes gráficas", "Artes y artesanías", 
-        "Comercio y marketing", "Electricidad y electrónica", "Energía y agua", "Fabricación mecánica", 
-        "Hostelería y turismo", "Imagen personal", "Imagen y sonido", "Informática y comunicaciones", 
-        "Instalación y mantenimiento", "Madera, mueble y corcho", "Marítimo-pesquera", "Química", 
-        "Sanidad", "Seguridad y medio ambiente", "Servicios socioculturales y a la comunidad", 
-        "Textil, confección y piel", "Transporte y mantenimiento de vehículos", "Vidrio y cerámica"};
-*/
-
     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
             EmpresaEntity oEmpresaEntity = new EmpresaEntity();

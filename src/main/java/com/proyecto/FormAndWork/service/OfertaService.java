@@ -88,8 +88,7 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
         }
 
         oOfertaEntity.setTitulo(titulo);
-        oOfertaEntity.setDescripcion(arrDescripciones[oRandomService.getRandomInt(0, arrDescripciones.length - 1)]);
-        //oOfertaEntity.setDescripcion("Oferta de empleo para " + titulo + " en el sector de " + sectorClave + ".");
+        oOfertaEntity.setDescripcion("Oferta de empleo para " + titulo + " en el sector de " + sectorClave + ".");
         oOfertaEntity.setSector(sectorOpt.get());
         oOfertaEntity.setEmpresa(empresaOpt.get());
 
