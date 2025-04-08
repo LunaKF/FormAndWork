@@ -14,12 +14,15 @@ public interface AlumnoRepository extends JpaRepository<AlumnoEntity, Long> {
     Page<AlumnoEntity> findBySectorId(Pageable oPageable, Long id_sector);
 }
 /*
- * PARA FILTRAR EN LA LISTA DE ALUMNOS POR SECTOR TENFGO QUE CREAR UN     Page<AlumnoEntity> findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
-            String filter2, String filter3, String filter4, String filter5, Pageable oPageable); PERO CON SECTORID CONTANING XD
-
-
-
-            
+ * PARA FILTRAR EN LA LISTA DE ALUMNOS POR SECTOR TENGO QUE CREAR UN
+ * Page<AlumnoEntity>
+ * findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+ * String filter2, String filter3, String filter4, String filter5, Pageable
+ * oPageable); PERO CON SECTORID CONTANING 
+ * 
+ * 
+ * 
+ * 
  * @Query(value =
  * "SELECT COUNT(*) FROM asiento, apunte WHERE asiento.id_usuario=:id AND apunte.id_asiento=asiento.id"
  * , nativeQuery = true)

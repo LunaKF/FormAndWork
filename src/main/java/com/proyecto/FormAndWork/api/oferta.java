@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.entity.OfertaEntity;
 import com.proyecto.FormAndWork.service.OfertaService;
 
@@ -36,6 +37,14 @@ public class oferta {
             @RequestParam  Optional<String> filter) {
         return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPage(oPageable, filter), HttpStatus.OK);
     }
+
+        @GetMapping("xsector/{id}")
+    public ResponseEntity<Page<OfertaEntity>> getPageXsector(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
+    } 
 
     @GetMapping("/{id}")
     public ResponseEntity<OfertaEntity> getOferta(@PathVariable Long id) {

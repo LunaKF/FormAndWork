@@ -37,23 +37,30 @@ public class OfertaEntity {
     @JoinColumn(name = "id_empresa")
     private EmpresaEntity empresa;
 
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @JoinColumn(name = "id_candidatura")
+    private CandidaturaEntity candidatura;
+
 
     public OfertaEntity() {
     }
 
-    public OfertaEntity(String titulo, String descripcion, SectorEntity sector, EmpresaEntity empresa) {
+    public OfertaEntity(String titulo, String descripcion, SectorEntity sector, EmpresaEntity empresa, CandidaturaEntity candidatura) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.sector = sector;
         this.empresa = empresa;
+        this.candidatura = candidatura;
+        
     }
 
-    public OfertaEntity(Long id, String titulo, String descripcion, SectorEntity sector, EmpresaEntity empresa) {
+    public OfertaEntity(Long id, String titulo, String descripcion, SectorEntity sector, EmpresaEntity empresa, CandidaturaEntity candidatura) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.sector = sector;            
         this.empresa = empresa;
+        this.candidatura = candidatura;
     }
 
     public Long getId() {
@@ -86,6 +93,14 @@ public class OfertaEntity {
     public void setSector(SectorEntity sector) {
         this.sector = sector;
     }
+    public CandidaturaEntity getCandidatura() {
+        return candidatura;
+    }
+
+    public void setCandidatura(CandidaturaEntity candidatura) {
+        this.candidatura = candidatura;
+    }
+
     public EmpresaEntity getEmpresa() {
         return empresa;
     }
