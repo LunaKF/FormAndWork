@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.entity.EmpresaEntity;
+import com.proyecto.FormAndWork.entity.SectorEntity;
 import com.proyecto.FormAndWork.repository.EmpresaRepository;
 import com.proyecto.FormAndWork.exception.*;
 
@@ -29,31 +31,38 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         @Autowired
         SectorService oSectorService;
 
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            EmpresaEntity oEmpresaEntity = new EmpresaEntity();
-            oEmpresaEntity.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
-            oEmpresaEntity.setSector(oSectorService.randomSelection());
-            oEmpresaEntity.setEmail("email" + oEmpresaEntity.getNombre() + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
-            oEmpresaRepository.save(oEmpresaEntity);
+        public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
+
+            if (filter.isPresent()) {
+                return oEmpresaRepository.findByNombreContainingOrSectorContainingOrEmailContaining(
+                        filter.get(), filter.get(), filter.get(), oPageable);
+            } else {
+                return oEmpresaRepository.findAll(oPageable);
+            }
         }
-        return oEmpresaRepository.count();
-    }
-
-    public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
-
+    
+        public Page<EmpresaEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
         if (filter.isPresent()) {
             return oEmpresaRepository.findByNombreContainingOrSectorContainingOrEmailContaining(
                     filter.get(), filter.get(), filter.get(), oPageable);
         } else {
-            return oEmpresaRepository.findAll(oPageable);
+            return oEmpresaRepository.findBySectorId(oPageable, id_sector);
         }
     }
 
+        public List<EmpresaEntity> getAll() {
+            return oEmpresaRepository.findAll(); 
+        }
+    
+    
     public EmpresaEntity get(Long id) {
         return oEmpresaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
         // return oEmpresaRepository.findById(id).get();
+    }
+
+    public List<EmpresaEntity> getAllOrdered() {
+        return oEmpresaRepository.findAllByOrderByIdAsc();
     }
 
     public Long count() {
@@ -94,6 +103,16 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         return oEmpresaRepository.findById(idAleatorio).orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
     }
     
+    public Long randomCreate(Long cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            EmpresaEntity oEmpresaEntity = new EmpresaEntity();
+            oEmpresaEntity.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
+            oEmpresaEntity.setSector(oSectorService.randomSelection());
+            oEmpresaEntity.setEmail("email" + oEmpresaEntity.getNombre() + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
+            oEmpresaRepository.save(oEmpresaEntity);
+        }
+        return oEmpresaRepository.count();
+    }
 
    
 }

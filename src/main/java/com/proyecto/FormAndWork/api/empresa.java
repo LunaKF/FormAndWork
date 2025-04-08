@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,14 @@ public class empresa {
         return new ResponseEntity<Page<EmpresaEntity>>(oEmpresaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
+    @GetMapping("xsector/{id}")
+    public ResponseEntity<Page<EmpresaEntity>> getPageXsector(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<Page<EmpresaEntity>>(oEmpresaService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
+    }   
+
     @GetMapping("/{id}")
     public ResponseEntity<EmpresaEntity> getEmpresa(@PathVariable Long id) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.get(id), HttpStatus.OK);
@@ -70,6 +79,11 @@ public class empresa {
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oEmpresaService.deleteAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<EmpresaEntity>> getAll() {
+    return new ResponseEntity<>(oEmpresaService.getAllOrdered(), HttpStatus.OK);
     }
 
 }

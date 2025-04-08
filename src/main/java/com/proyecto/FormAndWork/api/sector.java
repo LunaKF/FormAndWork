@@ -30,12 +30,6 @@ public class sector {
     @Autowired
     SectorService oSectorService;
 
-
-    @GetMapping("/all")
-public ResponseEntity<List<SectorEntity>> getAll() {
-    return new ResponseEntity<>(oSectorService.getAll(), HttpStatus.OK);
-}
-
     @GetMapping("")
     public ResponseEntity<Page<SectorEntity>> getPage(
             Pageable oPageable,
@@ -75,6 +69,6 @@ public ResponseEntity<List<SectorEntity>> getAll() {
     @GetMapping("/all")
     public ResponseEntity<List<SectorEntity>> getAll() {
     return new ResponseEntity<>(oSectorService.getAllOrdered(), HttpStatus.OK);
-}
+    }
 
 }
