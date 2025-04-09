@@ -98,8 +98,8 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
 }
     public Page<OfertaEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (filter.isPresent()) {
-            return oOfertaRepository.findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContainingOrCandidaturaContaining(
-                    filter.get(), filter.get(), filter.get(), filter.get(), filter.get(),oPageable);
+            return oOfertaRepository.findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContaining(
+                    filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oOfertaRepository.findAll(oPageable);
         }
@@ -107,8 +107,8 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
 
     public Page<OfertaEntity> getPageXsector(Pageable oPageable, Optional<String> filter,Long id_sector) {
         if (filter.isPresent()) {
-            return oOfertaRepository.findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContainingOrCandidaturaContaining(
-                filter.get(), filter.get(), filter.get(), filter.get(), filter.get(),oPageable);
+            return oOfertaRepository.findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContaining(
+                filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
         } else {
             return oOfertaRepository.findBySectorId(oPageable, id_sector);
         }
