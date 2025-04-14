@@ -40,7 +40,6 @@ public class OfertaEntity {
     private EmpresaEntity empresa;
 
     @OneToMany(mappedBy = "oferta", fetch = FetchType.LAZY)
-    @JsonManagedReference // si querés serializar
     private java.util.List<CandidaturaEntity> candidaturas;
 
 

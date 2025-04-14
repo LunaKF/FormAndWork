@@ -2,6 +2,7 @@ package com.proyecto.FormAndWork.service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -156,8 +157,13 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
     }
 
     public OfertaEntity randomSelection() {
-        return oOfertaRepository.findById((long) oRandomService.getRandomInt(1, (int) (long) this.count())).get();
+        List<Long> listaIds = oOfertaRepository.findAllIds(); 
+        if (listaIds.isEmpty()) {
+            throw new ResourceNotFoundException("No hay ofertas disponibles para selección aleatoria");
+        }
+        Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
+        return oOfertaRepository.findById(idAleatorio)
+                .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
     }
-
    
 }

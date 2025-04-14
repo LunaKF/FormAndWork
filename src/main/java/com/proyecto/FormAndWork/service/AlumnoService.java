@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,13 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     }
 
     public AlumnoEntity randomSelection() {
-        return oAlumnoRepository.findById((long) oRandomService.getRandomInt(1, (int) (long) this.count())).get();
+        List<Long> listaIds = oAlumnoRepository.findAllIds();
+        if (listaIds.isEmpty()) {
+            throw new ResourceNotFoundException("No hay alumnos disponibles para selección aleatoria");
+        }
+        Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
+        return oAlumnoRepository.findById(idAleatorio)
+                .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
     }
 
 }

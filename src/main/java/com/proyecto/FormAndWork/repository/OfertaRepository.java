@@ -1,5 +1,7 @@
 package com.proyecto.FormAndWork.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,9 @@ public interface OfertaRepository extends JpaRepository<OfertaEntity, Long> {
             String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
 
     Page<OfertaEntity> findBySectorId(Pageable oPageable, Long id_sector);
+
+    @Query("SELECT a.id FROM OfertaEntity a")
+    List<Long> findAllIds();
 
     /*
      * @Query(value =

@@ -31,7 +31,7 @@ public class CandidaturaEntity {
     private LocalDate fecha;
 
 
-   @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+    @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "id_alumno")
     private AlumnoEntity alumno;
  
