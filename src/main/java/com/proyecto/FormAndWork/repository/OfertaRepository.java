@@ -16,6 +16,8 @@ public interface OfertaRepository extends JpaRepository<OfertaEntity, Long> {
 
     Page<OfertaEntity> findBySectorId(Pageable oPageable, Long id_sector);
 
+    Page<OfertaEntity> findByEmpresaId(Pageable oPageable, Long id_empresa);
+
     @Query("SELECT a.id FROM OfertaEntity a")
     List<Long> findAllIds();
 

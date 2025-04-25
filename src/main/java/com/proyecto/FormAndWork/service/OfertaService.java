@@ -115,6 +115,17 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
         }
     }
 
+
+    public Page<OfertaEntity> getPageXempresa(Pageable oPageable, Optional<String> filter,Long id_empresa) {
+        if (filter.isPresent()) {
+            return oOfertaRepository.findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContaining(
+                filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
+        } else {
+            return oOfertaRepository.findByEmpresaId(oPageable, id_empresa);
+        }
+    }
+
+
     public OfertaEntity get(Long id) {
         return oOfertaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));

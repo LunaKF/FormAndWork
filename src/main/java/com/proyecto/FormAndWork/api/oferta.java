@@ -38,6 +38,14 @@ public class oferta {
         return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
+    @GetMapping("xempresa/{id}")
+    public ResponseEntity<Page<OfertaEntity>> getPageXempresa(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam Optional<String> filter) {
+        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXempresa(oPageable, filter, id), HttpStatus.OK);
+    } 
+
         @GetMapping("xsector/{id}")
     public ResponseEntity<Page<OfertaEntity>> getPageXsector(
             @PathVariable Long id,
