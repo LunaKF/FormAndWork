@@ -11,8 +11,7 @@ import com.proyecto.FormAndWork.entity.CandidaturaEntity;
 
 public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, Long> {
 
-    Page<CandidaturaEntity> findByFechaContaining(
-            String filter, Pageable oPageable);
+    Page<CandidaturaEntity> findByAlumnoNombreContaining(String nombre, Pageable pageable);
 
 
             @Query("SELECT e.id FROM CandidaturaEntity e")

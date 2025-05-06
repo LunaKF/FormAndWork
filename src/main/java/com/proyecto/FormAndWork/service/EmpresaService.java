@@ -100,8 +100,8 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
             if (filter.isPresent()) {
-                return oEmpresaRepository.findByNombreContainingOrSectorContainingOrEmailContaining(
-                        filter.get(), filter.get(), filter.get(), oPageable);
+                return oEmpresaRepository.findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
+                        filter.get(), filter.get(), oPageable);
             } else {
                 return oEmpresaRepository.findAll(oPageable);
             }
@@ -109,8 +109,8 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     
         public Page<EmpresaEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
         if (filter.isPresent()) {
-            return oEmpresaRepository.findByNombreContainingOrSectorContainingOrEmailContaining(
-                    filter.get(), filter.get(), filter.get(), oPageable);
+            return oEmpresaRepository.findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
+                    filter.get(), filter.get(), oPageable);
         } else {
             return oEmpresaRepository.findBySectorId(oPageable, id_sector);
         }

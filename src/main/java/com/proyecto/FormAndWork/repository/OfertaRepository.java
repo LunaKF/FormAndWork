@@ -11,8 +11,9 @@ import com.proyecto.FormAndWork.entity.OfertaEntity;
 
 public interface OfertaRepository extends JpaRepository<OfertaEntity, Long> {
 
-    Page<OfertaEntity> findBytituloContainingOrDescripcionContainingOrEmpresaContainingOrSectorContaining(
-            String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
+        Page<OfertaEntity> findByTituloContainingOrDescripcionContainingOrEmpresa_NombreContainingOrSector_NombreContaining(
+                String titulo, String descripcion, String nombreEmpresa, String nombreSector, Pageable pageable);
+            
 
     Page<OfertaEntity> findBySectorId(Pageable oPageable, Long id_sector);
 

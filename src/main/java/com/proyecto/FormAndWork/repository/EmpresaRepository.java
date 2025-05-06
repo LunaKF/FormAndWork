@@ -12,10 +12,9 @@ import com.proyecto.FormAndWork.entity.EmpresaEntity;
 
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Long> {
 
-    Page<EmpresaEntity> findByNombreContainingOrSectorContainingOrEmailContaining(
-            String filter2, String filter3, String filter4, Pageable oPageable);
-
-
+    Page<EmpresaEntity> findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
+        String nombre, String email, Pageable pageable);
+    
             @Query("SELECT e.id FROM EmpresaEntity e")
             List<Long> findAllIds();
             
