@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.entity.CandidaturaEntity;
 import com.proyecto.FormAndWork.service.CandidaturaService;
 
@@ -35,6 +36,14 @@ public class candidatura {
             Pageable oPageable,
             @RequestParam  Optional<String> filter) {
         return new ResponseEntity<Page<CandidaturaEntity>>(oCandidaturaService.getPage(oPageable, filter), HttpStatus.OK);
+    }
+
+    @GetMapping("xoferta/{id}")
+    public ResponseEntity<Page<CandidaturaEntity>> getPageXoferta(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam  Optional<String> filter) {
+        return new ResponseEntity<Page<CandidaturaEntity>>(oCandidaturaService.getPageXoferta(oPageable, filter, id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

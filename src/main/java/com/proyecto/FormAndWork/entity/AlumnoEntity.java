@@ -37,10 +37,15 @@ public class AlumnoEntity {
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
 
+    @OneToMany(mappedBy = "alumno", fetch = FetchType.LAZY)
+    private java.util.List<CandidaturaEntity> candidaturas;
+
+
     @Email
     private String email;
 
     public AlumnoEntity() {
+        candidaturas = new java.util.ArrayList<>();
     }
 
     public AlumnoEntity(String nombre, SectorEntity sector, String ape1, String ape2, String email) {
@@ -106,6 +111,10 @@ public class AlumnoEntity {
 
     public void setApe2(String ape2) {
         this.ape2 = ape2;
+    }
+
+    public int getCandidaturas() {
+        return (candidaturas != null) ? candidaturas.size() : 0;
     }
 
 }

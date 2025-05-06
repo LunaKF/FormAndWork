@@ -43,8 +43,8 @@ public class OfertaEntity {
     private java.util.List<CandidaturaEntity> candidaturas;
 
 
-
-    public OfertaEntity() {
+    public OfertaEntity(){
+        candidaturas = new java.util.ArrayList<>();
     }
 
     public OfertaEntity(String titulo, String descripcion, SectorEntity sector, EmpresaEntity empresa) {
@@ -99,6 +99,10 @@ public class OfertaEntity {
     }
     public void setEmpresa(EmpresaEntity empresa) {
         this.empresa = empresa;
+    }
+
+    public int getCandidaturas() {
+        return (candidaturas != null) ? candidaturas.size() : 0;
     }
 
 }

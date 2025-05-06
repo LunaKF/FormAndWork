@@ -76,6 +76,17 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
             return oCandidaturaRepository.findAll(oPageable);
         }
     }
+
+    public Page<CandidaturaEntity> getPageXoferta(Pageable oPageable, Optional<String> filter , Long id_oferta) {
+
+        if (filter.isPresent()) {
+            return oCandidaturaRepository.findByFechaContaining(
+                    filter.get(), oPageable);
+        } else {
+            return oCandidaturaRepository.findByOfertaId(id_oferta, oPageable);
+        }
+    }
+
     public CandidaturaEntity get(Long id) {
         return oCandidaturaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrado"));

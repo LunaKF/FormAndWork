@@ -17,6 +17,8 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
 
             @Query("SELECT e.id FROM CandidaturaEntity e")
             List<Long> findAllIds();
+      
             
+    Page<CandidaturaEntity> findByOfertaId(Long id_oferta, Pageable oPageable); 
 
 }

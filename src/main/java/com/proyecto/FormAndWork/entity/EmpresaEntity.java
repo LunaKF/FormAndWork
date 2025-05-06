@@ -29,10 +29,14 @@ public class EmpresaEntity {
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
 
+    @OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY)
+    private java.util.List<OfertaEntity> ofertas;
+
     @Email
     private String email;
 
-    public EmpresaEntity() {
+    public EmpresaEntity() { 
+        ofertas = new java.util.ArrayList<>();
     }
 
     public EmpresaEntity(String nombre, SectorEntity sector, String email) {
@@ -79,5 +83,10 @@ public class EmpresaEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getOfertas() {
+        return (ofertas != null) ? ofertas.size() : 0;
+    }
+
 
 }
