@@ -46,6 +46,14 @@ public class candidatura {
         return new ResponseEntity<Page<CandidaturaEntity>>(oCandidaturaService.getPageXoferta(oPageable, filter, id), HttpStatus.OK);
     }
 
+    @GetMapping("xalumno/{id}")    
+    public ResponseEntity<Page<CandidaturaEntity>> getPageXalumno(
+            @PathVariable Long id,
+            Pageable oPageable,
+            @RequestParam  Optional<String> filter) {
+        return new ResponseEntity<Page<CandidaturaEntity>>(oCandidaturaService.getPageXalumno(oPageable, filter, id), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CandidaturaEntity> getCandidatura(@PathVariable Long id) {
         return new ResponseEntity<CandidaturaEntity>(oCandidaturaService.get(id), HttpStatus.OK);

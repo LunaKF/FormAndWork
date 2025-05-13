@@ -1,6 +1,7 @@
 package com.proyecto.FormAndWork.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,16 @@ public interface AlumnoRepository extends JpaRepository<AlumnoEntity, Long> {
 
     @Query("SELECT a.id FROM AlumnoEntity a")
     List<Long> findAllIds();
+
+     Optional<AlumnoEntity> findByEmailAndPassword(String email, String password);
+   
 }
+
+
+
+
+
+
 /*
  * PARA FILTRAR EN LA LISTA DE ALUMNOS POR SECTOR TENGO QUE CREAR UN
  * Page<AlumnoEntity>

@@ -20,4 +20,6 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
             
     Page<CandidaturaEntity> findByOfertaId(Long id_oferta, Pageable oPageable); 
 
+    Page<CandidaturaEntity> findByAlumnoId(Long id_alumno, Pageable oPageable);
+
 }
