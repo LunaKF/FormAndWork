@@ -25,6 +25,14 @@ public class EmpresaEntity {
     @Size(min = 3, max = 255)
     private String nombre;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
@@ -34,6 +42,9 @@ public class EmpresaEntity {
 
     @Email
     private String email;
+
+    //contraseña
+    private String password;
 
     public EmpresaEntity() { 
         ofertas = new java.util.ArrayList<>();

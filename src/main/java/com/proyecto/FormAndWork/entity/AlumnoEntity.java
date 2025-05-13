@@ -37,12 +37,23 @@ public class AlumnoEntity {
     @JoinColumn(name = "id_sector")
     private SectorEntity sector;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @OneToMany(mappedBy = "alumno", fetch = FetchType.LAZY)
     private java.util.List<CandidaturaEntity> candidaturas;
 
 
     @Email
     private String email;
+
+    //contraseña 
+    private String password;
 
     public AlumnoEntity() {
         candidaturas = new java.util.ArrayList<>();
