@@ -11,29 +11,30 @@ import com.proyecto.FormAndWork.entity.AlumnoEntity;
 
 public interface AlumnoRepository extends JpaRepository<AlumnoEntity, Long> {
 
-    Page<AlumnoEntity> findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
-            String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
+        Page<AlumnoEntity> findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+                        String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
 
-    Page<AlumnoEntity> findBySectorId(Pageable oPageable, Long id_sector);
+        Page<AlumnoEntity> findBySectorId(Pageable oPageable, Long id_sector);
 
-    @Query("SELECT a.id FROM AlumnoEntity a")
-    List<Long> findAllIds();
+        @Query("SELECT a.id FROM AlumnoEntity a")
+        List<Long> findAllIds();
 
-     Optional<AlumnoEntity> findByEmailAndPassword(String email, String password);
-   
+        
+
+        // -----------------------------------------------------------------------------------------
+
+        Optional<AlumnoEntity> findByEmail(String email);
+
+        Optional<AlumnoEntity> findByEmailAndPassword(String email, String password);
+
 }
-
-
-
-
-
 
 /*
  * PARA FILTRAR EN LA LISTA DE ALUMNOS POR SECTOR TENGO QUE CREAR UN
  * Page<AlumnoEntity>
  * findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
  * String filter2, String filter3, String filter4, String filter5, Pageable
- * oPageable); PERO CON SECTORID CONTANING 
+ * oPageable); PERO CON SECTORID CONTANING
  * 
  * 
  * 

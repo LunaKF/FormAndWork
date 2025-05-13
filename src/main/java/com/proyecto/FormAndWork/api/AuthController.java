@@ -16,15 +16,19 @@ import com.proyecto.FormAndWork.service.AuthService;
 public class AuthController {
 
     @Autowired
-    private AuthService authService;
+    AuthService oAuthService;
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LogindataBean loginData) {
-        String token = authService.login(loginData.getEmail(), loginData.getPassword());
-        if (token != null) {
-            return ResponseEntity.ok("\"" + token + "\"");
+    @PostMapping("/loginalumno")
+    public ResponseEntity<String> login(@RequestBody LogindataBean oLogindataBean) {
+        if (oAuthService.checkLogin(oLogindataBean)) {
+            return ResponseEntity.ok("\"" + oAuthService.getToken(oLogindataBean.getEmail()) + "\"");
         } else {
-            return ResponseEntity.status(401).body("\"Credenciales incorrectas\"");
+            return ResponseEntity.status(401).body("\"" + "Error de autenticación" + "\"");
         }
     }
+
+        
+
+
+
 }
