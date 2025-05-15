@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.entity.EmpresaEntity;
 
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Long> {
@@ -20,6 +19,8 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Long> {
     List<Long> findAllIds();
 
     List<EmpresaEntity> findAllByOrderByIdAsc();
+
+     Optional<EmpresaEntity> findByEmail(String email);
 
     Page<EmpresaEntity> findBySectorId(Pageable oPageable, Long id_sector);
 

@@ -104,7 +104,7 @@ public class AuthService {
    
     public Boolean isAdmin(){
         String emailSession=oHttpServletRequest.getAttribute("email").toString();
-        if (emailSession.equals("rafa@ausias.net")){
+        if (emailSession.equals("admin@ausias.es")){
             return true;
         }else{
             return false;
