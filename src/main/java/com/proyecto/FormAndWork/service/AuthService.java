@@ -30,8 +30,8 @@ public class AuthService {
 
     @Autowired
     HttpServletRequest oHttpServletRequest;
-
-    public boolean checkLogin(LogindataBean oLogindataBean) {
+    
+/*   public boolean checkLogin(LogindataBean oLogindataBean) {
 
         if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) {
             return false;
@@ -41,10 +41,10 @@ public class AuthService {
             return false;
         }
 
-        if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es") || oLogindataBean.getPassword().equalsIgnoreCase("admin1234")) { // cambiar por hash 
+        if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es") && oLogindataBean.getPassword().equalsIgnoreCase("admin1234")) { // cambiar por hash 
             return true;
         }
-
+//cualquier persona que escriba el email de un alumno o empresa puede iniciar sesión, aunque escriba cualquier contraseña
         if (oAlumnoRepository.findByEmail(oLogindataBean.getEmail()).isEmpty()) {
             if (oEmpresaRepository.findByEmail(oLogindataBean.getEmail()).isEmpty()) {
                 return false;
@@ -56,7 +56,32 @@ public class AuthService {
         }
 
     }
+*/  
 
+public boolean checkLogin(LogindataBean oLogindataBean) {
+    if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) return false;
+    if (oLogindataBean.getEmail().isEmpty() || oLogindataBean.getPassword().isEmpty()) return false;
+
+    // Login admin
+    if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es") &&
+        oLogindataBean.getPassword().equals("admin1234")) {
+        return true;
+    }
+
+    // Buscar alumno
+    var alumnoOpt = oAlumnoRepository.findByEmail(oLogindataBean.getEmail());
+    if (alumnoOpt.isPresent()) {
+        return alumnoOpt.get().getPassword().equals(oLogindataBean.getPassword());
+    }
+
+    // Buscar empresa
+    var empresaOpt = oEmpresaRepository.findByEmail(oLogindataBean.getEmail());
+    if (empresaOpt.isPresent()) {
+        return empresaOpt.get().getPassword().equals(oLogindataBean.getPassword());
+    }
+
+    return false;
+}
     private Map<String, String> getClaims(String email) {
         Map<String, String> claims = new HashMap<>();
         claims.put("email", email);
