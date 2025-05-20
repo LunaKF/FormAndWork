@@ -44,7 +44,9 @@ public class AuthService {
         if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es") && oLogindataBean.getPassword().equalsIgnoreCase("admin1234")) { // cambiar por hash 
             return true;
         }
-//cualquier persona que escriba el email de un alumno o empresa puede iniciar sesión, aunque escriba cualquier contraseña
+
+        //cualquier persona que escriba el email de un alumno o empresa puede iniciar sesión, aunque escriba cualquier contraseña
+        
         if (oAlumnoRepository.findByEmail(oLogindataBean.getEmail()).isEmpty()) {
             if (oEmpresaRepository.findByEmail(oLogindataBean.getEmail()).isEmpty()) {
                 return false;
