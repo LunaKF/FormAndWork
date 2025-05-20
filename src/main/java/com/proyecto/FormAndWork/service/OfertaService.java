@@ -127,6 +127,8 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
 
 
     public OfertaEntity get(Long id) {
+
+
         return oOfertaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
         // return oOfertaRepository.findById(id).get();

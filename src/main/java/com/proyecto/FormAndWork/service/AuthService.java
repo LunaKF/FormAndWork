@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto.FormAndWork.bean.LogindataBean;
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
+import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.exception.UnauthorizedAccessException;
 import com.proyecto.FormAndWork.repository.AlumnoRepository;
 import com.proyecto.FormAndWork.repository.EmpresaRepository;
@@ -94,7 +95,17 @@ public boolean checkLogin(LogindataBean oLogindataBean) {
         return JWTHelper.generateToken(getClaims(email));
     }
 
-    public AlumnoEntity getUsuarioFromToken() {
+    public EmpresaEntity getEmpresaFromToken() {
+        if (oHttpServletRequest.getAttribute("email") == null) {
+            throw new UnauthorizedAccessException("No hay usuario en la sesión");
+        } else {
+            String email = oHttpServletRequest.getAttribute("email").toString();
+            return oEmpresaRepository.findByEmail(email).get();
+        }                
+    }
+
+
+    public AlumnoEntity getAlumnoFromToken() {
         if (oHttpServletRequest.getAttribute("email") == null) {
             throw new UnauthorizedAccessException("No hay usuario en la sesión");
         } else {

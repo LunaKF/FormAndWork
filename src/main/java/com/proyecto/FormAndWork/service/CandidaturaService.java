@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.entity.CandidaturaEntity;
+import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.entity.OfertaEntity;
 import com.proyecto.FormAndWork.repository.CandidaturaRepository;
 import com.proyecto.FormAndWork.exception.*;
@@ -107,8 +108,33 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
     }
 
     public CandidaturaEntity get(Long id) {
-        return oCandidaturaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrado"));
+
+        // sacar el email
+        
+
+        if (oAuthService.isAdmin()) {
+            return oCandidaturaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrado"));
+
+        } else {
+            if (oAuthService.isAlumno()){
+                AlumnoEntity oAlumnoEntity= oAuthService.getAlumnoFromToken();
+                // ¿la candidatura es de él ? si-> devoelver la candidatura no-> dar error
+
+            } else{
+                if (oAuthService.isEmpresa()){
+                    EmpresaEntity oEmpresaEntity= oAuthService.getEmpresaFromToken();
+
+                    //¿la candidatura es para la empresa?
+                }
+            }
+
+
+        }
+
+
+
+
         // return oCandidaturaRepository.findById(id).get();
     }
 
