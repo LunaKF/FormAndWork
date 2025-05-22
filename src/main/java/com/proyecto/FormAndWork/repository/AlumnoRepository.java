@@ -19,8 +19,6 @@ public interface AlumnoRepository extends JpaRepository<AlumnoEntity, Long> {
         @Query("SELECT a.id FROM AlumnoEntity a")
         List<Long> findAllIds();
 
-        
-
         // -----------------------------------------------------------------------------------------
 
         Optional<AlumnoEntity> findByEmail(String email);

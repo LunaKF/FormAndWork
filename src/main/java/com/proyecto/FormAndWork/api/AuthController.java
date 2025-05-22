@@ -43,14 +43,14 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/usuario")
+  /*   @GetMapping("/usuario")
     public ResponseEntity<AlumnoEntity> getUsuario() {
         try {
             return ResponseEntity.ok(oAuthService.getUsuarioFromToken());
         } catch (Exception e) {
             return ResponseEntity.status(401).build();
         }
-    }
+    }*/
 
     @GetMapping("/alumno")
     public ResponseEntity<Boolean> isAlumno() {

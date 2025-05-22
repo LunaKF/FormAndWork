@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.repository.AlumnoRepository;
+import com.proyecto.FormAndWork.repository.CandidaturaRepository;
 import com.proyecto.FormAndWork.exception.*;
 
 @Service
@@ -21,14 +22,22 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     @Autowired
     RandomService oRandomService;
 
+    @Autowired
+        SectorService oSectorService;
+
+    @Autowired
+    AuthService oAuthService;
+
+    @Autowired
+    CandidaturaRepository oCandidaturaRepository;   
+
     private String[] arrNombres = { "Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
             "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio" };
 
     private String[] arrApellidos = { "Sancho", "Gomez", "Pérez", "Rodriguez", "Garcia", "Fernandez", "Lopez",
             "Martinez", "Sanchez", "Gonzalez", "Gimenez", "Feliu", "Gonzalez", "Hermoso", "Vidal", "Escriche",
             "Moreno" };
-    @Autowired
-    SectorService oSectorService;
+    
 
     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
@@ -54,6 +63,41 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
         }
     }
 
+
+public AlumnoEntity get(Long id) {
+    AlumnoEntity alumno = oAlumnoRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
+
+    if (oAuthService.isAdmin()) {
+        // Admin puede ver cualquier alumno
+        return alumno;
+    } else if (oAuthService.isAlumno()) {
+        AlumnoEntity alumnoAutenticado = oAuthService.getAlumnoFromToken();
+
+        if (alumnoAutenticado.getId().equals(id)) {
+            // El alumno puede verse a sí mismo
+            return alumno;
+        } else {
+            throw new UnauthorizedAccessException("No tienes permiso para ver a este alumno");
+        }
+
+    } else if (oAuthService.isEmpresa()) {
+        Long empresaId = oAuthService.getEmpresaFromToken().getId();
+
+        // Verificamos si el alumno tiene alguna candidatura en alguna oferta de esta empresa
+        boolean tieneCandidatura = oCandidaturaRepository.existsByAlumnoIdAndOfertaEmpresaId(id, empresaId);
+
+        if (tieneCandidatura) {
+            return alumno;
+        } else {
+            throw new UnauthorizedAccessException("No tienes permiso para ver a este alumno");
+        }
+
+    } else {
+        throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+    }
+}
+
     public Page<AlumnoEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
         if (filter.isPresent()) {
             return oAlumnoRepository.findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
@@ -62,13 +106,13 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
             return oAlumnoRepository.findBySectorId(oPageable, id_sector);
         }
     }
-
+/* 
     public AlumnoEntity get(Long id) {
         return oAlumnoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
         // return oAlumnoRepository.findById(id).get();
     }
-
+*/
     public Long count() {
         return oAlumnoRepository.count();
     }

@@ -107,7 +107,10 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
         }
     }
 
-    public CandidaturaEntity get(Long id) {
+    //Empresas: solo pueden ver las candidaturas de sus ofertas
+    //Alumnos: solo pueden ver sus candidaturas
+    //Admin: puede ver todas las candidaturas
+   /*  public CandidaturaEntity get(Long id) {
 
         // sacar el email
         
@@ -132,11 +135,42 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
 
         }
 
-
-
-
         // return oCandidaturaRepository.findById(id).get();
+    } */
+
+    public CandidaturaEntity get(Long id) {
+    // Obtener la candidatura desde la base de datos
+    CandidaturaEntity candidatura = oCandidaturaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
+
+    if (oAuthService.isAdmin()) {
+        // Si es admin, tiene acceso completo
+        return candidatura;
+    } else if (oAuthService.isAlumno()) {
+        AlumnoEntity alumnoAutenticado = oAuthService.getAlumnoFromToken();
+
+        // Verificar si la candidatura pertenece al alumno autenticado
+        if (candidatura.getAlumno().getId().equals(alumnoAutenticado.getId())) {
+            return candidatura;
+        } else {
+            throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
+        }
+
+    } else if (oAuthService.isEmpresa()) {
+        EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+        // Verificar si la oferta de la candidatura pertenece a la empresa autenticada
+        if (candidatura.getOferta().getEmpresa().getId().equals(empresaAutenticada.getId())) {
+            return candidatura;
+        } else {
+            throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
+        }
+
+    } else {
+        throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
     }
+}
+
 
     public Long count() {
         return oCandidaturaRepository.count();

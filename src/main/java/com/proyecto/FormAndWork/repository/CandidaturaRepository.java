@@ -22,4 +22,12 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
 
     Page<CandidaturaEntity> findByAlumnoId(Long id_alumno, Pageable oPageable);
 
+    /*El siguiente método usa Spring Data JPA para verificar si existe una candidatura en la que:
+
+        -El alumno tiene el alumnoId, y
+        -La oferta está asociada a la empresaId.
+    */
+    boolean existsByAlumnoIdAndOfertaEmpresaId(Long alumnoId, Long empresaId);
+
+
 }
