@@ -7,23 +7,30 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
 
 public interface AlumnoRepository extends JpaRepository<AlumnoEntity, Long> {
 
-        Page<AlumnoEntity> findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
-                        String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
+    Page<AlumnoEntity> findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+            String filter2, String filter3, String filter4, String filter5, Pageable oPageable);
 
-        Page<AlumnoEntity> findBySectorId(Pageable oPageable, Long id_sector);
+Page<AlumnoEntity> findBySectorId(Long id_sector, Pageable oPageable); 
 
-        @Query("SELECT a.id FROM AlumnoEntity a")
-        List<Long> findAllIds();
+    @Query("SELECT a.id FROM AlumnoEntity a")
+    List<Long> findAllIds();
 
-        // -----------------------------------------------------------------------------------------
+    Optional<AlumnoEntity> findByEmail(String email);
 
-        Optional<AlumnoEntity> findByEmail(String email);
+    Optional<AlumnoEntity> findByEmailAndPassword(String email, String password);
 
-        Optional<AlumnoEntity> findByEmailAndPassword(String email, String password);
+    // -----------------------------------------------------------------------------------------
+    Page<AlumnoEntity> findByIdIn(List<Long> ids, Pageable pageable);
+
+    @Query("SELECT a FROM AlumnoEntity a WHERE a.id IN :ids AND "
+            + "(a.nombre LIKE %:filter% OR a.ape1 LIKE %:filter% OR a.ape2 LIKE %:filter% OR a.email LIKE %:filter%)")
+    Page<AlumnoEntity> findByIdInAndFilter(@Param("ids") List<Long> ids, @Param("filter") String filter, Pageable pageable);
 
 }
 

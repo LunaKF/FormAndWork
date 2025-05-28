@@ -1,9 +1,8 @@
 package com.proyecto.FormAndWork.service;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,8 @@ public class AuthService {
 
     @Autowired
     HttpServletRequest oHttpServletRequest;
-    
-/*   public boolean checkLogin(LogindataBean oLogindataBean) {
+
+    /*   public boolean checkLogin(LogindataBean oLogindataBean) {
 
         if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) {
             return false;
@@ -59,37 +58,43 @@ public class AuthService {
         }
 
     }
-*/  
+     */
+    public boolean checkLogin(LogindataBean oLogindataBean) {
+        if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) {
+            return false;
+        }
+        if (oLogindataBean.getEmail().isEmpty() || oLogindataBean.getPassword().isEmpty()) {
+            return false;
+        }
 
-public boolean checkLogin(LogindataBean oLogindataBean) {
-    if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) return false;
-    if (oLogindataBean.getEmail().isEmpty() || oLogindataBean.getPassword().isEmpty()) return false;
+        // Login admin
+        if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es")
+                && oLogindataBean.getPassword().equals("admin1234")) {
+            return true;
+        }
 
-    // Login admin
-    if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es") &&
-        oLogindataBean.getPassword().equals("admin1234")) {
-        return true;
+        // Buscar alumno
+        var alumnoOpt = oAlumnoRepository.findByEmail(oLogindataBean.getEmail());
+        if (alumnoOpt.isPresent()) {
+            return alumnoOpt.get().getPassword().equals(oLogindataBean.getPassword());
+        }
+
+        // Buscar empresa
+        var empresaOpt = oEmpresaRepository.findByEmail(oLogindataBean.getEmail());
+        if (empresaOpt.isPresent()) {
+            return empresaOpt.get().getPassword().equals(oLogindataBean.getPassword());
+        }
+
+        return false;
     }
 
-    // Buscar alumno
-    var alumnoOpt = oAlumnoRepository.findByEmail(oLogindataBean.getEmail());
-    if (alumnoOpt.isPresent()) {
-        return alumnoOpt.get().getPassword().equals(oLogindataBean.getPassword());
-    }
-
-    // Buscar empresa
-    var empresaOpt = oEmpresaRepository.findByEmail(oLogindataBean.getEmail());
-    if (empresaOpt.isPresent()) {
-        return empresaOpt.get().getPassword().equals(oLogindataBean.getPassword());
-    }
-
-    return false;
-}
     private Map<String, String> getClaims(String email) {
         Map<String, String> claims = new HashMap<>();
         claims.put("email", email);
         return claims;
-    };
+    }
+
+    ;
 
     public String getToken(String email) {
         return JWTHelper.generateToken(getClaims(email));
@@ -101,9 +106,8 @@ public boolean checkLogin(LogindataBean oLogindataBean) {
         } else {
             String email = oHttpServletRequest.getAttribute("email").toString();
             return oEmpresaRepository.findByEmail(email).get();
-        }                
+        }
     }
-
 
     public AlumnoEntity getAlumnoFromToken() {
         if (oHttpServletRequest.getAttribute("email") == null) {
@@ -111,44 +115,74 @@ public boolean checkLogin(LogindataBean oLogindataBean) {
         } else {
             String email = oHttpServletRequest.getAttribute("email").toString();
             return oAlumnoRepository.findByEmail(email).get();
-        }                
+        }
     }
 
     public boolean isSessionActive() {
         return oHttpServletRequest.getAttribute("email") != null;
     }
 
-    public String getEmailSession(){
-        return oHttpServletRequest.getAttribute("email").toString();
+    public String getEmailSession() {
+    Object emailAttr = oHttpServletRequest.getAttribute("email");
+    if (emailAttr == null) {
+        throw new UnauthorizedAccessException("No hay usuario en la sesión");
+    }
+    return emailAttr.toString();
+}
+
+
+    public Boolean isAlumno() {
+        String emailSession = oHttpServletRequest.getAttribute("email").toString();
+        if (oAlumnoRepository.findByEmail(emailSession).isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public Boolean isAlumno(){
-        String emailSession=oHttpServletRequest.getAttribute("email").toString();
-        if (oAlumnoRepository.findByEmail(emailSession).isPresent()){
+    public Boolean isEmpresa() {
+        String emailSession = oHttpServletRequest.getAttribute("email").toString();
+        if (oEmpresaRepository.findByEmail(emailSession).isPresent()) {
             return true;
-        }else{
+        } else {
             return false;
-        }        
+        }
     }
-   
-    public Boolean isEmpresa(){
-        String emailSession=oHttpServletRequest.getAttribute("email").toString();
-        if (oEmpresaRepository.findByEmail(emailSession).isPresent()){
-            return true;
-        }else{
-            return false;
-        }        
-    }
-   
-    public Boolean isAdmin(){
-        String emailSession=oHttpServletRequest.getAttribute("email").toString();
-        if (emailSession.equals("admin@ausias.es")){
-            return true;
-        }else{
-            return false;
-        }        
-    }
-   
 
+    public Boolean isAdmin() {
+        String emailSession = oHttpServletRequest.getAttribute("email").toString();
+        if (emailSession.equals("admin@ausias.es")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Metodos para comprobar si el usuario autenticado es el dueño de los datos 
+    public Boolean isAlumnoWithItsOwnData(Long id) {
+        String emailSession = oHttpServletRequest.getAttribute("email").toString();
+
+        Optional<AlumnoEntity> alumnoOpt = oAlumnoRepository.findByEmail(emailSession);
+
+        if (alumnoOpt.isPresent()) {
+            AlumnoEntity alumno = alumnoOpt.get();
+            return alumno.getId().equals(id);
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean isEmpresaWithItsOwnData(Long id) {
+        String emailSession = oHttpServletRequest.getAttribute("email").toString();
+
+        Optional<EmpresaEntity> empresaOpt = oEmpresaRepository.findByEmail(emailSession);
+
+        if (empresaOpt.isPresent()) {
+            EmpresaEntity empresa = empresaOpt.get();
+            return empresa.getId().equals(id);
+        } else {
+            return false;
+        }
+    }
 
 }

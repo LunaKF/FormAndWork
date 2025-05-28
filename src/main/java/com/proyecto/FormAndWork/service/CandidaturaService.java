@@ -51,17 +51,6 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
     @Autowired
     SectorService oSectorService;
 
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            CandidaturaEntity oAsientoEntity = new CandidaturaEntity();
-            oAsientoEntity.setFecha(LocalDate.now().minusDays(oRandomService.getRandomInt(0, 30)));
-            oAsientoEntity.setAlumno(oAlumnoService.randomSelection());
-            oAsientoEntity.setOferta(oOfertaService.randomSelection());
-            oCandidaturaRepository.save(oAsientoEntity);
-        }
-        return oCandidaturaRepository.count();
-    }
-
     public Page<CandidaturaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
         if (!oAuthService.isSessionActive()){
@@ -215,5 +204,14 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
         return oCandidaturaRepository.findById(idAleatorio)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
     }
-
+    public Long randomCreate(Long cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            CandidaturaEntity oAsientoEntity = new CandidaturaEntity();
+            oAsientoEntity.setFecha(LocalDate.now().minusDays(oRandomService.getRandomInt(0, 30)));
+            oAsientoEntity.setAlumno(oAlumnoService.randomSelection());
+            oAsientoEntity.setOferta(oOfertaService.randomSelection());
+            oCandidaturaRepository.save(oAsientoEntity);
+        }
+        return oCandidaturaRepository.count();
+    }
 }

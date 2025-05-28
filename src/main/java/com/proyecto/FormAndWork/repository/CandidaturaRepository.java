@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.proyecto.FormAndWork.entity.CandidaturaEntity;
 
@@ -13,12 +14,10 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
 
     Page<CandidaturaEntity> findByAlumnoNombreContaining(String nombre, Pageable pageable);
 
+    @Query("SELECT e.id FROM CandidaturaEntity e")
+    List<Long> findAllIds();
 
-            @Query("SELECT e.id FROM CandidaturaEntity e")
-            List<Long> findAllIds();
-      
-            
-    Page<CandidaturaEntity> findByOfertaId(Long id_oferta, Pageable oPageable); 
+    Page<CandidaturaEntity> findByOfertaId(Long id_oferta, Pageable oPageable);
 
     Page<CandidaturaEntity> findByAlumnoId(Long id_alumno, Pageable oPageable);
 
@@ -26,8 +25,11 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
 
         -El alumno tiene el alumnoId, y
         -La oferta está asociada a la empresaId.
-    */
-    boolean existsByAlumnoIdAndOfertaEmpresaId(Long alumnoId, Long empresaId);
+     */    boolean existsByAlumnoIdAndOfertaEmpresaId(Long alumnoId, Long empresaId);
+    
+    //--------------------------------------------------------------------
 
+    @Query("SELECT DISTINCT c.alumno.id FROM CandidaturaEntity c WHERE c.oferta.empresa.id = :empresaId")
+    List<Long> findAlumnoIdsByOfertaEmpresaId(@Param("empresaId") Long empresaId);
 
 }
