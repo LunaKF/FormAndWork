@@ -87,14 +87,31 @@ public class AuthService {
 
         return false;
     }
-
+/* 
     private Map<String, String> getClaims(String email) {
         Map<String, String> claims = new HashMap<>();
         claims.put("email", email);
         return claims;
     }
 
-    ;
+*/   
+ private Map<String, String> getClaims(String email) {
+    Map<String, String> claims = new HashMap<>();
+    claims.put("email", email);
+
+    if (email.equalsIgnoreCase("admin@ausias.es")) {
+        claims.put("tipoUsuario", "admin");
+    } else if (oEmpresaRepository.findByEmail(email).isPresent()) {
+        claims.put("tipoUsuario", "empresa");
+    } else if (oAlumnoRepository.findByEmail(email).isPresent()) {
+        claims.put("tipoUsuario", "alumno");
+    } else {
+        claims.put("tipoUsuario", "desconocido");
+    }
+
+    return claims;
+}
+
 
     public String getToken(String email) {
         return JWTHelper.generateToken(getClaims(email));
