@@ -122,6 +122,7 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
     public Page<OfertaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
         if (oAuthService.isSessionActive()) {
+            //FALTA EL admin
             if (oAuthService.isEmpresa()) {
                 EmpresaEntity oEmpresaAutenticada = oAuthService.getEmpresaFromToken();
                 if (filter.isPresent()) {

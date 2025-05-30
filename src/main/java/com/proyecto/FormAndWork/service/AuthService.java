@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.FormAndWork.bean.LogindataBean;
@@ -30,6 +31,13 @@ public class AuthService {
 
     @Autowired
     HttpServletRequest oHttpServletRequest;
+
+
+    @Value("${admin.email}")
+    private String strEmail;
+
+    @Value("${admin.password}")
+    private String strPassword;
 
     /*   public boolean checkLogin(LogindataBean oLogindataBean) {
 
@@ -60,6 +68,7 @@ public class AuthService {
     }
      */
     public boolean checkLogin(LogindataBean oLogindataBean) {
+
         if (oLogindataBean.getEmail() == null || oLogindataBean.getPassword() == null) {
             return false;
         }
@@ -68,8 +77,8 @@ public class AuthService {
         }
 
         // Login admin
-        if (oLogindataBean.getEmail().equalsIgnoreCase("admin@ausias.es")
-                && oLogindataBean.getPassword().equals("admin1234")) {
+        if (oLogindataBean.getEmail().equalsIgnoreCase(strEmail)
+                && oLogindataBean.getPassword().equals(strPassword)) {
             return true;
         }
 
