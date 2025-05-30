@@ -35,39 +35,38 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
     @Autowired
     AuthService oAuthService;
 
-    private String[] arrNombres = { "Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-            "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio", "Antonio", "Javier", "Cristina", "Alberto",
-            "Esteban", "David", "Fernando", "Jorge", "Raquel", "Elena", "Patricia", "Santiago", "Diego", "Victor" };
+    private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
+        "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio", "Antonio", "Javier", "Cristina", "Alberto",
+        "Esteban", "David", "Fernando", "Jorge", "Raquel", "Elena", "Patricia", "Santiago", "Diego", "Victor"};
 
     String[] arrDescripciones = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
-            "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
+        "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
     };
 
     @Autowired
     SectorService oSectorService;
 
     public Page<CandidaturaEntity> getPage(Pageable oPageable, Optional<String> filter) {
-
-        if (!oAuthService.isSessionActive()){
+        if (!oAuthService.isSessionActive()) {
             throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+        } else if (oAuthService.isAdmin()) {
+            return oCandidaturaRepository.findAll(oPageable);
+        } else if (oAuthService.isEmpresa()) {
+            // aqui una empresa ve las candidaturas de sus ofertas
+            EmpresaEntity oEmpresaEntity = oAuthService.getEmpresaFromToken();
+            return oCandidaturaRepository.findByOfertaEmpresaId(oEmpresaEntity.getId(), oPageable);
+
+        } else if (oAuthService.isAlumno()) {
+            // aqui un alumno ve las candidaturas de sus ofertas
+            AlumnoEntity oAlumnoEntity = oAuthService.getAlumnoFromToken();
+            return oCandidaturaRepository.findByAlumnoId(oAlumnoEntity.getId(), oPageable);
+
         }
-
-
-        if (oAuthService.isAlumno()) {
-            // aqui un alumno va a ver las candidaturas
-            // solo puede ver las suyas
-            // habra que crear un metodo en el repository 
-            // que busque por email de alumno
-            // por lo tanto cambiar el findall 
-            // return oCandidaturaRepository.findAllByEmailDeAlumno(oPageable);
-
-        }
-
         if (filter.isPresent()) {
             return oCandidaturaRepository.findByAlumnoNombreContaining(
                     filter.get(), oPageable);
@@ -77,29 +76,81 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
     }
 
     public Page<CandidaturaEntity> getPageXoferta(Pageable oPageable, Optional<String> filter, Long id_oferta) {
+        if (!oAuthService.isSessionActive()) {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+        }
+    OfertaEntity oOfertaEntity = oOfertaService.get(id_oferta);
 
+    if (oAuthService.isAdmin()) {
         if (filter.isPresent()) {
-            return oCandidaturaRepository.findByAlumnoNombreContaining(
-                    filter.get(), oPageable);
+            return oCandidaturaRepository.findByAlumnoNombreContaining(filter.get(), oPageable);
         } else {
             return oCandidaturaRepository.findByOfertaId(id_oferta, oPageable);
         }
     }
 
-    public Page<CandidaturaEntity> getPageXalumno(Pageable oPageable, Optional<String> filter, Long id_alumno) {
+    if (oAuthService.isEmpresa()) {
+        EmpresaEntity oEmpresaEntity = oAuthService.getEmpresaFromToken();
+
+        if (!oEmpresaEntity.getId().equals(oOfertaEntity.getEmpresa().getId())) {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+        }
 
         if (filter.isPresent()) {
-            return oCandidaturaRepository.findByAlumnoNombreContaining(
-                    filter.get(), oPageable);
+            return oCandidaturaRepository.findByAlumnoNombreContaining(filter.get(), oPageable);
         } else {
-            return oCandidaturaRepository.findByAlumnoId(id_alumno, oPageable);
+            return oCandidaturaRepository.findByOfertaId(id_oferta, oPageable);
         }
     }
+
+    if (oAuthService.isAlumno()) {
+        AlumnoEntity oAlumnoEntity = oAuthService.getAlumnoFromToken();
+
+        // Verificamos si el alumno tiene una candidatura para esa oferta
+        boolean existe = oCandidaturaRepository.existsByAlumnoIdAndOfertaEmpresaId(
+                oAlumnoEntity.getId(), oOfertaEntity.getEmpresa().getId());
+
+        if (!existe) {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+        }
+
+        // Mostramos solo las candidaturas de ese alumno en esa oferta
+        return oCandidaturaRepository.findByOfertaIdAndAlumnoId(id_oferta, oAlumnoEntity.getId(), oPageable);
+    }
+
+    throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+}
+
+public Page<CandidaturaEntity> getPageXalumno(Pageable oPageable, Optional<String> filter, Long id_alumno) {
+
+    if (!oAuthService.isSessionActive()) {
+        throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+    }
+
+    if (oAuthService.isAdmin()) {
+        // El admin puede ver todas las candidaturas de cualquier alumno
+        return oCandidaturaRepository.findByAlumnoId(id_alumno, oPageable);
+    }
+
+    if (oAuthService.isAlumno()) {
+        AlumnoEntity oAlumnoEntity = oAuthService.getAlumnoFromToken();
+
+        // Solo puede ver sus propias candidaturas
+        if (!oAlumnoEntity.getId().equals(id_alumno)) {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+        }
+
+        return oCandidaturaRepository.findByAlumnoId(id_alumno, oPageable);
+    }
+
+    throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
+}
+
 
     //Empresas: solo pueden ver las candidaturas de sus ofertas
     //Alumnos: solo pueden ver sus candidaturas
     //Admin: puede ver todas las candidaturas
-   /*  public CandidaturaEntity get(Long id) {
+    /*  public CandidaturaEntity get(Long id) {
 
         // sacar el email
         
@@ -126,40 +177,38 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
 
         // return oCandidaturaRepository.findById(id).get();
     } */
-
     public CandidaturaEntity get(Long id) {
-    // Obtener la candidatura desde la base de datos
-    CandidaturaEntity candidatura = oCandidaturaRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
+        // Obtener la candidatura desde la base de datos
+        CandidaturaEntity candidatura = oCandidaturaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
 
-    if (oAuthService.isAdmin()) {
-        // Si es admin, tiene acceso completo
-        return candidatura;
-    } else if (oAuthService.isAlumno()) {
-        AlumnoEntity alumnoAutenticado = oAuthService.getAlumnoFromToken();
-
-        // Verificar si la candidatura pertenece al alumno autenticado
-        if (candidatura.getAlumno().getId().equals(alumnoAutenticado.getId())) {
+        if (oAuthService.isAdmin()) {
+            // Si es admin, tiene acceso completo
             return candidatura;
+        } else if (oAuthService.isAlumno()) {
+            AlumnoEntity alumnoAutenticado = oAuthService.getAlumnoFromToken();
+
+            // Verificar si la candidatura pertenece al alumno autenticado
+            if (candidatura.getAlumno().getId().equals(alumnoAutenticado.getId())) {
+                return candidatura;
+            } else {
+                throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
+            }
+
+        } else if (oAuthService.isEmpresa()) {
+            EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+            // Verificar si la oferta de la candidatura pertenece a la empresa autenticada
+            if (candidatura.getOferta().getEmpresa().getId().equals(empresaAutenticada.getId())) {
+                return candidatura;
+            } else {
+                throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
+            }
+
         } else {
-            throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
         }
-
-    } else if (oAuthService.isEmpresa()) {
-        EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
-
-        // Verificar si la oferta de la candidatura pertenece a la empresa autenticada
-        if (candidatura.getOferta().getEmpresa().getId().equals(empresaAutenticada.getId())) {
-            return candidatura;
-        } else {
-            throw new UnauthorizedAccessException("No puedes acceder a esta candidatura");
-        }
-
-    } else {
-        throw new UnauthorizedAccessException("No tienes permisos para acceder a esta información");
     }
-}
-
 
     public Long count() {
         return oCandidaturaRepository.count();
@@ -196,7 +245,7 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
 
     public CandidaturaEntity randomSelection() {
         List<Long> listaIds = oCandidaturaRepository.findAllIds(); // método para obtener los IDs añadido en el
-                                                                   // repository
+        // repository
         if (listaIds.isEmpty()) {
             throw new ResourceNotFoundException("No hay candidaturas disponibles para selección aleatoria");
         }
@@ -204,6 +253,7 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
         return oCandidaturaRepository.findById(idAleatorio)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
     }
+
     public Long randomCreate(Long cantidad) {
         for (int i = 0; i < cantidad; i++) {
             CandidaturaEntity oAsientoEntity = new CandidaturaEntity();

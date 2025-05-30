@@ -88,7 +88,7 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     
             // Generar un email válido
             oEmpresaEntity.setEmail(
-                "email" + nombreCorto + oRandomService.getRandomInt(1000, 9999) + "@gmail.com"
+                nombreCorto + oRandomService.getRandomInt(1000, 9999) + "@gmail.com"
             );
     
             // Guardar la entidad en la base de datos

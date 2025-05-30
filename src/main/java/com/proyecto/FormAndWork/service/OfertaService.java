@@ -42,55 +42,56 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
     AuthService oAuthService;
 
     String[] arrDescripciones = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
-            "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
+        "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
     };
 
     Map<String, String[]> ofertasEmpleo = new HashMap<>();
+
     {
         ofertasEmpleo.put("Administración y gestión",
-                new String[] { "Asistente administrativo", "Contable", "Secretario/a" });
-        ofertasEmpleo.put("Agraria", new String[] { "Agricultor/a", "Ganadero/a", "Técnico agrícola" });
+                new String[]{"Asistente administrativo", "Contable", "Secretario/a"});
+        ofertasEmpleo.put("Agraria", new String[]{"Agricultor/a", "Ganadero/a", "Técnico agrícola"});
         ofertasEmpleo.put("Artes gráficas",
-                new String[] { "Diseñador gráfico", "Impresor/a", "Técnico de preimpresión" });
+                new String[]{"Diseñador gráfico", "Impresor/a", "Técnico de preimpresión"});
         ofertasEmpleo.put("Artes y artesanías",
-                new String[] { "Artista plástico", "Artesano/a", "Diseñador de joyas" });
+                new String[]{"Artista plástico", "Artesano/a", "Diseñador de joyas"});
         ofertasEmpleo.put("Comercio y marketing",
-                new String[] { "Vendedor/a", "Gestor de marketing", "Community Manager" });
+                new String[]{"Vendedor/a", "Gestor de marketing", "Community Manager"});
         ofertasEmpleo.put("Electricidad y electrónica",
-                new String[] { "Técnico electricista", "Ingeniero electrónico", "Operador de sistemas" });
+                new String[]{"Técnico electricista", "Ingeniero electrónico", "Operador de sistemas"});
         ofertasEmpleo.put("Energía y agua",
-                new String[] { "Técnico de energía solar", "Ingeniero de energía eólica", "Operador de planta" });
+                new String[]{"Técnico de energía solar", "Ingeniero de energía eólica", "Operador de planta"});
         ofertasEmpleo.put("Fabricación mecánica",
-                new String[] { "Técnico de mantenimiento", "Ingeniero mecánico", "Operador de maquinaria" });
-        ofertasEmpleo.put("Hostelería y turismo", new String[] { "Camarero/a", "Recepcionista de hotel", "Chef" });
-        ofertasEmpleo.put("Imagen personal", new String[] { "Estilista", "Maquillador/a", "Peluquero/a" });
-        ofertasEmpleo.put("Imagen y sonido", new String[] { "Camarógrafo", "Sonidista", "Editor de video" });
+                new String[]{"Técnico de mantenimiento", "Ingeniero mecánico", "Operador de maquinaria"});
+        ofertasEmpleo.put("Hostelería y turismo", new String[]{"Camarero/a", "Recepcionista de hotel", "Chef"});
+        ofertasEmpleo.put("Imagen personal", new String[]{"Estilista", "Maquillador/a", "Peluquero/a"});
+        ofertasEmpleo.put("Imagen y sonido", new String[]{"Camarógrafo", "Sonidista", "Editor de video"});
         ofertasEmpleo.put("Informática y comunicaciones",
-                new String[] { "Desarrollador Java", "Analista de datos", "Técnico en redes" });
-        ofertasEmpleo.put("Instalación y mantenimiento", new String[] { "Técnico de climatización",
-                "Instalador de sistemas de seguridad", "Mecánico de electrodomésticos" });
+                new String[]{"Desarrollador Java", "Analista de datos", "Técnico en redes"});
+        ofertasEmpleo.put("Instalación y mantenimiento", new String[]{"Técnico de climatización",
+            "Instalador de sistemas de seguridad", "Mecánico de electrodomésticos"});
         ofertasEmpleo.put("Madera, mueble y corcho",
-                new String[] { "Carpintero/a", "Diseñador de interiores", "Ebanista" });
+                new String[]{"Carpintero/a", "Diseñador de interiores", "Ebanista"});
         ofertasEmpleo.put("Marítimo-pesquera",
-                new String[] { "Pescador/a", "Técnico de acuicultura", "Capitán de barco" });
+                new String[]{"Pescador/a", "Técnico de acuicultura", "Capitán de barco"});
         ofertasEmpleo.put("Química",
-                new String[] { "Técnico de laboratorio", "Químico/a analista", "Investigador/a químico" });
-        ofertasEmpleo.put("Sanidad", new String[] { "Enfermero/a", "Médico general", "Técnico de laboratorio" });
+                new String[]{"Técnico de laboratorio", "Químico/a analista", "Investigador/a químico"});
+        ofertasEmpleo.put("Sanidad", new String[]{"Enfermero/a", "Médico general", "Técnico de laboratorio"});
         ofertasEmpleo.put("Seguridad y medio ambiente",
-                new String[] { "Técnico de seguridad", "Inspector ambiental", "Gestor de residuos" });
+                new String[]{"Técnico de seguridad", "Inspector ambiental", "Gestor de residuos"});
         ofertasEmpleo.put("Servicios socioculturales y a la comunidad",
-                new String[] { "Educador/a social", "Trabajador/a social", "Psicólogo/a" });
+                new String[]{"Educador/a social", "Trabajador/a social", "Psicólogo/a"});
         ofertasEmpleo.put("Textil, confección y piel",
-                new String[] { "Diseñador de moda", "Sastre/a", "Operador de máquina de coser" });
+                new String[]{"Diseñador de moda", "Sastre/a", "Operador de máquina de coser"});
         ofertasEmpleo.put("Transporte y mantenimiento de vehículos",
-                new String[] { "Conductor de camión", "Mecánico de automóviles", "Técnico de logística" });
+                new String[]{"Conductor de camión", "Mecánico de automóviles", "Técnico de logística"});
         ofertasEmpleo.put("Vidrio y cerámica",
-                new String[] { "Cristalero/a", "Ceramista", "Técnico de calidad en vidrio" });
+                new String[]{"Cristalero/a", "Ceramista", "Técnico de calidad en vidrio"});
     }
 
     public Long randomCreate(Long cantidad) {
@@ -130,8 +131,11 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
                 } else {
                     return oOfertaRepository.findByEmpresaId(oPageable, oEmpresaAutenticada.getId());
                 }
+            } else if (oAuthService.isAlumno()) {
+                AlumnoEntity oAlumnoAutenticado = oAuthService.getAlumnoFromToken();
+                return oOfertaRepository.findByAlumnoCandidatado(oAlumnoAutenticado.getId(), oPageable);
             } else {
-                return null;
+                return Page.empty(); // por si hay un tipo de usuario no contemplado
             }
         } else {
             if (filter.isPresent()) {
@@ -142,7 +146,6 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
                 return oOfertaRepository.findAll(oPageable);
             }
         }
-
     }
 
     public Page<OfertaEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
