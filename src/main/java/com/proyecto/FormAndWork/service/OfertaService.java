@@ -122,7 +122,6 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
     public Page<OfertaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
         if (oAuthService.isSessionActive()) {
-            //FALTA EL admin
             if (oAuthService.isEmpresa()) {
                 EmpresaEntity oEmpresaAutenticada = oAuthService.getEmpresaFromToken();
                 if (filter.isPresent()) {
@@ -135,6 +134,9 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
             } else if (oAuthService.isAlumno()) {
                 AlumnoEntity oAlumnoAutenticado = oAuthService.getAlumnoFromToken();
                 return oOfertaRepository.findByAlumnoCandidatado(oAlumnoAutenticado.getId(), oPageable);
+            } else if (oAuthService.isAdmin()) {
+                return oOfertaRepository.findAll(oPageable);
+
             } else {
                 return Page.empty(); // por si hay un tipo de usuario no contemplado
             }
