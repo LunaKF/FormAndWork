@@ -1,5 +1,7 @@
 package com.proyecto.FormAndWork.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -52,6 +54,7 @@ public class AlumnoEntity {
     @Email
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     //contraseña 
     private String password;
 
