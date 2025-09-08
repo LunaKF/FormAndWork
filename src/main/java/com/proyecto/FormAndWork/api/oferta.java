@@ -69,17 +69,19 @@ public class oferta {
         return new ResponseEntity<Long>(oOfertaService.delete(id), HttpStatus.OK);
     }
 
-    @PutMapping("")
-    public ResponseEntity<OfertaEntity> create(@RequestBody OfertaEntity oOfertaEntity) {
-        return new ResponseEntity<OfertaEntity>(oOfertaService.create(oOfertaEntity), HttpStatus.OK);
-    }
+@PostMapping("") // Crear
+public ResponseEntity<OfertaEntity> create(@RequestBody OfertaEntity oOfertaEntity) {
+    return new ResponseEntity<>(oOfertaService.create(oOfertaEntity), HttpStatus.CREATED);
+}
 
-    @PostMapping("")
-    public ResponseEntity<OfertaEntity> update(@RequestBody OfertaEntity oOfertaEntity) {
-        return new ResponseEntity<OfertaEntity>(oOfertaService.update(oOfertaEntity), HttpStatus.OK);
-    }
+@PutMapping("/{id}") // Actualizar
+public ResponseEntity<OfertaEntity> update(@PathVariable Long id, @RequestBody OfertaEntity oOfertaEntity) {
+    oOfertaEntity.setId(id);
+    return new ResponseEntity<>(oOfertaService.update(oOfertaEntity), HttpStatus.OK);
+}
 
-    @PutMapping("/random/{cantidad}")
+
+    @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> create(@PathVariable Long cantidad) {
         return new ResponseEntity<Long>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
     }
