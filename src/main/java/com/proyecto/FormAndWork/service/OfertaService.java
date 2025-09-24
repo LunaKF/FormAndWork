@@ -41,15 +41,6 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
     @Autowired
     AuthService oAuthService;
 
-    String[] arrDescripciones = {
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
-        "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
-    };
-
     Map<String, String[]> ofertasEmpleo = new HashMap<>();
 
     {
@@ -94,30 +85,96 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
                 new String[]{"Cristalero/a", "Ceramista", "Técnico de calidad en vidrio"});
     }
 
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            OfertaEntity oOfertaEntity = new OfertaEntity();
-            String sectorClave = (String) ofertasEmpleo.keySet().toArray()[oRandomService.getRandomInt(0,
-                    ofertasEmpleo.size() - 1)];
-            String titulo = ofertasEmpleo.get(sectorClave)[oRandomService.getRandomInt(0,
-                    ofertasEmpleo.get(sectorClave).length - 1)];
+public Long randomCreate(Long cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        OfertaEntity o = new OfertaEntity();
 
-            Optional<EmpresaEntity> empresaOpt = Optional.ofNullable(oEmpresaService.randomSelection());
-            Optional<SectorEntity> sectorOpt = Optional.ofNullable(oSectorService.randomSelection());
+        // 1) Empresa primero → sector coherente
+        EmpresaEntity empresa = Optional.ofNullable(oEmpresaService.randomSelection())
+            .orElseThrow(() -> new RuntimeException("No hay empresas disponibles"));
+        SectorEntity sector = empresa.getSector();
 
-            if (empresaOpt.isEmpty() || sectorOpt.isEmpty()) {
-                throw new RuntimeException("No hay empresas o sectores disponibles para asignar a la oferta.");
-            }
+        // 2) Título alineado a tu catálogo
+        String sectorClave = (String) ofertasEmpleo.keySet().toArray()
+            [oRandomService.getRandomInt(0, ofertasEmpleo.size() - 1)];
 
-            oOfertaEntity.setTitulo(titulo);
-            oOfertaEntity.setDescripcion("Oferta de empleo para " + titulo + " en el sector de " + sectorClave + ".");
-            oOfertaEntity.setSector(sectorOpt.get());
-            oOfertaEntity.setEmpresa(empresaOpt.get());
+        String[] posibles = ofertasEmpleo.get(sectorClave);
+        String titulo = posibles[oRandomService.getRandomInt(0, posibles.length - 1)];
 
-            oOfertaRepository.save(oOfertaEntity);
+        o.setTitulo(titulo);
+        o.setEmpresa(empresa);
+        o.setSector(sector);
+
+        // 3) Descripción rica (máx ~520 chars para no pasar 555)
+        String descripcion = buildDescripcionLarga(sectorClave, titulo, empresa.getNombre());
+        if (descripcion.length() > 540) { // margen de seguridad
+            descripcion = descripcion.substring(0, 540);
         }
-        return oOfertaRepository.count();
+        o.setDescripcion(descripcion);
+
+        oOfertaRepository.save(o);
     }
+    return oOfertaRepository.count();
+}
+
+/** Genera 3–6 frases: rol, tareas, requisitos y beneficios */
+private String buildDescripcionLarga(String sector, String titulo, String empresa) {
+    String[] inicios = {
+        "Buscamos", "Seleccionamos", "Se requiere", "Nos encantaría incorporar",
+        "Ampliamos equipo con", "Abrimos vacante para"
+    };
+    String[] tareas = {
+        "participar en proyectos de alto impacto",
+        "colaborar con equipos multidisciplinares",
+        "mejorar procesos internos y la calidad del servicio",
+        "desarrollar soluciones escalables y mantenibles",
+        "garantizar el cumplimiento de estándares y buenas prácticas",
+        "dar soporte técnico y funcional a las áreas implicadas"
+    };
+    String[] requisitos = {
+        "al menos 1 año de experiencia", "capacidad de aprendizaje continuo",
+        "orientación a resultados y trabajo en equipo", "comunicación efectiva",
+        "conocimientos sólidos en el área", "actitud proactiva y resolutiva"
+    };
+    String[] beneficios = {
+        "horario flexible y modalidad híbrida",
+        "plan de carrera y formación continua",
+        "ambiente colaborativo y tecnología puntera",
+        "conciliación y beneficios sociales",
+        "participación en proyectos innovadores"
+    };
+
+    StringBuilder sb = new StringBuilder(520);
+    sb.append(inicios[oRandomService.getRandomInt(0, inicios.length - 1)])
+      .append(" un/a ").append(titulo.toLowerCase())
+      .append(" para ").append(empresa).append(", dentro del sector de ")
+      .append(sector.toLowerCase()).append(". ");
+
+    // 1–2 frases de tareas
+    int nt = oRandomService.getRandomInt(1, 2);
+    for (int i = 0; i < nt; i++) {
+        sb.append("La persona seleccionada deberá ")
+          .append(tareas[oRandomService.getRandomInt(0, tareas.length - 1)])
+          .append(". ");
+    }
+
+    // 1–2 frases de requisitos
+    int nr = oRandomService.getRandomInt(1, 2);
+    sb.append("Se valora ");
+    for (int i = 0; i < nr; i++) {
+        if (i > 0) sb.append(", ");
+        sb.append(requisitos[oRandomService.getRandomInt(0, requisitos.length - 1)]);
+    }
+    sb.append(". ");
+
+    // 1 frase de beneficios
+    sb.append("Ofrecemos ")
+      .append(beneficios[oRandomService.getRandomInt(0, beneficios.length - 1)])
+      .append(".");
+
+    return sb.toString();
+}
+
 
     public Page<OfertaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 

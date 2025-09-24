@@ -2,6 +2,7 @@ package com.proyecto.FormAndWork.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,18 +36,6 @@ public class CandidaturaService implements ServiceInterface<CandidaturaEntity> {
     @Autowired
     AuthService oAuthService;
 
-    private String[] arrNombres = {"Pepe", "Laura", "Ignacio", "Maria", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-        "Ana", "Rafa", "Manolo", "Lucia", "Marta", "Sara", "Rocio", "Antonio", "Javier", "Cristina", "Alberto",
-        "Esteban", "David", "Fernando", "Jorge", "Raquel", "Elena", "Patricia", "Santiago", "Diego", "Victor"};
-
-    String[] arrDescripciones = {
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
-        "Maecenas suscipit, mauris nec venenatis commodo, est erat pretium ante, id molestie eros magna at orci."
-    };
 
     @Autowired
     SectorService oSectorService;
@@ -253,15 +242,41 @@ public Page<CandidaturaEntity> getPageXalumno(Pageable oPageable, Optional<Strin
         return oCandidaturaRepository.findById(idAleatorio)
                 .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada"));
     }
+public Long randomCreate(Long cantidad) {
+    List<CandidaturaEntity> buffer = new ArrayList<>();
+    int batchSize = 500;
 
-    public Long randomCreate(Long cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            CandidaturaEntity oAsientoEntity = new CandidaturaEntity();
-            oAsientoEntity.setFecha(LocalDate.now().minusDays(oRandomService.getRandomInt(0, 30)));
-            oAsientoEntity.setAlumno(oAlumnoService.randomSelection());
-            oAsientoEntity.setOferta(oOfertaService.randomSelection());
-            oCandidaturaRepository.save(oAsientoEntity);
+    for (int i = 0; i < cantidad; i++) {
+        CandidaturaEntity c = new CandidaturaEntity();
+        c.setFecha(LocalDate.now().minusDays(oRandomService.getRandomInt(0, 30)));
+
+        AlumnoEntity alumno = oAlumnoService.randomSelection();
+        OfertaEntity oferta = oOfertaService.randomSelection();
+
+        // Evitar duplicados
+        boolean yaExiste = oCandidaturaRepository.existsByAlumnoIdAndOfertaEmpresaId(
+                alumno.getId(), oferta.getId()
+        );
+        if (yaExiste) { i--; continue; } // reintentar
+
+        c.setAlumno(alumno);
+        c.setOferta(oferta);
+        buffer.add(c);
+
+        // Guardar en lotes
+        if (buffer.size() >= batchSize) {
+            oCandidaturaRepository.saveAll(buffer);
+            buffer.clear();
         }
-        return oCandidaturaRepository.count();
     }
+
+    // Guardar lo que quede pendiente
+    if (!buffer.isEmpty()) {
+        oCandidaturaRepository.saveAll(buffer);
+    }
+
+    return oCandidaturaRepository.count();
+}
+
+
 }

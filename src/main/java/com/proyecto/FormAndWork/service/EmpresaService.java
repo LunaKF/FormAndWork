@@ -14,100 +14,96 @@ import com.proyecto.FormAndWork.entity.SectorEntity;
 import com.proyecto.FormAndWork.repository.EmpresaRepository;
 import com.proyecto.FormAndWork.exception.*;
 
-
 @Service
 public class EmpresaService implements ServiceInterface<EmpresaEntity> {
+
     @Autowired
     EmpresaRepository oEmpresaRepository;
 
     @Autowired
     RandomService oRandomService;
 
- 
-    private String[] arrNombresEmpresa = {
-            "GlobalTech", "Innova Solutions", "NextGen", "SmartSystems", "BlueWave",
-            "RedFox", "GreenEnergy", "CyberNet", "FutureVision", "CloudWorks",
-            "DataMind", "OpenWay", "QuantumSoft", "NeuralCode", "EcoLogic", "SecureSys"
+    private final String[] arrNombresEmpresa = {
+            "GlobalTech", "Innova Solutions", "NextGen", "SmartSystems", "BlueWave", "RedFox", "GreenEnergy",
+            "CyberNet", "FutureVision", "CloudWorks", "DataMind", "OpenWay", "QuantumSoft", "NeuralCode",
+            "EcoLogic", "SecureSys", "Hyperion", "Orion Labs", "NovaWorks", "Vertex Dynamics", "Infinity Corp",
+            "AstroLink", "Zenith Technologies", "Luminex", "Nimbus", "Atlas Group", "StellarNet", "CoreLogic",
+            "UrbanEdge", "PrimeWave", "Solaris", "Skyline Systems", "Titan Solutions", "PulseNet", "VectorLabs",
+            "MindForge", "Optima", "Everest Consulting", "Silverline", "PhoenixSoft", "AetherWorks", "VertexOne"
     };
 
-    private String[] arrNombresPropios = {
-            "Antonio López", "María Fernández", "Carlos Ortega", "Laura Martínez",
-            "Fernando García", "Sofía Pérez", "Javier Herrera", "Carmen Gutiérrez",
-            "Raúl Sánchez", "Beatriz Jiménez", "José Manuel Díaz", "Andrea Torres",
-            "Pedro Navarro", "Marta Ruiz", "Alejandro Castro", "Lucía Moreno"
+    private final String[] arrNombresPropios = {
+            // Apellidos y nombres que suenan corporativos
+            "López & Asociados", "Fernández Consulting", "Ortega Partners", "Martínez Group",
+            "García Solutions", "Pérez Holdings", "Herrera Global", "Gutiérrez Advisors",
+            "Sánchez Consulting", "Jiménez Partners", "Díaz Internacional", "Torres Group",
+            "Navarro Digital", "Ruiz Consulting", "Castro Partners", "Moreno Capital",
+            // Nombres de ciudades y regiones
+            "Madrid Capital", "Valencia Business", "Barcelona Consulting", "Bilbao Tech",
+            "Sevilla Global", "Granada Partners", "Lisboa Advisors", "Andes Group",
+            "Europa Consulting", "Iberia Solutions", "Mediterráneo Partners", "Atlantic Corp",
+            // Palabras aspiracionales / de confianza
+            "Pinnacle", "Summit", "Visionary", "Unity", "TrustPoint",
+            "Vanguard", "Momentum", "Integrity", "Horizon", "Legacy",
+            "Evolve", "Alliance", "Synergy", "Vertex", "Frontier"
     };
 
-    private String[] arrTiposEmpresa = {
-            "S.A.", "S.L.", "Cooperativa", "Group", "Holding", "Corp.", "Partners", "Consulting"
+    private final String[] arrTiposEmpresa = {
+            "S.A.", "S.L.", "Cooperativa", "Group", "Holding", "Corp.", "Partners", "Consulting",
+            "Enterprises", "Industries", "Solutions", "Networks", "Digital", "Technologies", "Labs",
+            "Systems", "Dynamics", "Global", "Innovations", "Ventures", "Associates", "Studio",
+            "Works", "Hub", "Experts"
     };
 
     @Autowired
     SectorService oSectorService;
 
-    /*
-     * private String[] arrSectores = {"Administración y gestión", "Agraria",
-     * "Artes gráficas", "Artes y artesanías",
-     * "Comercio y marketing", "Electricidad y electrónica", "Energía y agua",
-     * "Fabricación mecánica",
-     * "Hostelería y turismo", "Imagen personal", "Imagen y sonido",
-     * "Informática y comunicaciones",
-     * "Instalación y mantenimiento", "Madera, mueble y corcho",
-     * "Marítimo-pesquera", "Química",
-     * "Sanidad", "Seguridad y medio ambiente",
-     * "Servicios socioculturales y a la comunidad",
-     * "Textil, confección y piel", "Transporte y mantenimiento de vehículos",
-     * "Vidrio y cerámica"};
-     */
+public Long randomCreate(Long cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        EmpresaEntity e = new EmpresaEntity();
 
-     public Long randomCreate(Long cantidad) {
-        
-        for (int i = 0; i < cantidad; i++) {
-            EmpresaEntity oEmpresaEntity = new EmpresaEntity();
-    
-            // Generar un nombre aleatorio de empresa
-            if (oRandomService.getRandomInt(0, 1) == 0) {
-                oEmpresaEntity.setNombre(arrNombresEmpresa[oRandomService.getRandomInt(0, arrNombresEmpresa.length - 1)] + " " +
-                                         arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]);
-            } else {
-                oEmpresaEntity.setNombre(arrNombresPropios[oRandomService.getRandomInt(0, arrNombresPropios.length - 1)] + " " +
-                                         arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]);
-            }
-    
-            // Asignar un sector aleatorio
-            oEmpresaEntity.setSector(oSectorService.randomSelection());
-    
-            // Obtener las primeras 3 letras del nombre, asegurando que sean válidas
-            String nombreCorto = oEmpresaEntity.getNombre().trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
-    
-            // Si el nombre tiene menos de 3 caracteres, rellenarlo con "xyz"
-            if (nombreCorto.length() < 3) {
-                nombreCorto = (nombreCorto + "xyz").substring(0, 3);
-            } else {
-                nombreCorto = nombreCorto.substring(0, 3);
-            }
-    
-            // Generar un email válido
-            oEmpresaEntity.setEmail(
-                nombreCorto + oRandomService.getRandomInt(1000, 9999) + "@gmail.com"
+        if (oRandomService.getRandomInt(0, 1) == 0) {
+            e.setNombre(
+                arrNombresEmpresa[oRandomService.getRandomInt(0, arrNombresEmpresa.length - 1)] + " " +
+                arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]
             );
-    
-            // Guardar la entidad en la base de datos
-            oEmpresaRepository.save(oEmpresaEntity);
+        } else {
+            e.setNombre(
+                arrNombresPropios[oRandomService.getRandomInt(0, arrNombresPropios.length - 1)] + " " +
+                arrTiposEmpresa[oRandomService.getRandomInt(0, arrTiposEmpresa.length - 1)]
+            );
         }
-    
-        return oEmpresaRepository.count();
-    }
-        public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
-            if (filter.isPresent()) {
-                return oEmpresaRepository.findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
-                        filter.get(), filter.get(), oPageable);
-            } else {
-                return oEmpresaRepository.findAll(oPageable);
-            }
+        e.setSector(oSectorService.randomSelection());
+
+        String nombreCorto = e.getNombre().trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+        if (nombreCorto.length() < 3) nombreCorto = (nombreCorto + "xyz").substring(0, 3);
+        else nombreCorto = nombreCorto.substring(0, 3);
+
+        // si chocara (muy raro), añade sufijo extra
+        String email = nombreCorto + oRandomService.getRandomInt(1000, 9999) + "@gmail.com";
+        e.setEmail(email);
+
+        // 12345@ (sha256 ya fija, ok para semillas)
+        e.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278");
+
+        oEmpresaRepository.save(e);
+    }
+    return oEmpresaRepository.count();
+}
+
+
+    public Page<EmpresaEntity> getPage(Pageable oPageable, Optional<String> filter) {
+
+        if (filter.isPresent()) {
+            return oEmpresaRepository.findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
+                    filter.get(), filter.get(), oPageable);
+        } else {
+            return oEmpresaRepository.findAll(oPageable);
         }
-    
-        public Page<EmpresaEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
+    }
+
+    public Page<EmpresaEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
         if (filter.isPresent()) {
             return oEmpresaRepository.findByNombreIgnoreCaseContainingOrEmailIgnoreCaseContaining(
                     filter.get(), filter.get(), oPageable);
@@ -116,11 +112,10 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         }
     }
 
-        public List<EmpresaEntity> getAll() {
-            return oEmpresaRepository.findAll(); 
-        }
-    
-    
+    public List<EmpresaEntity> getAll() {
+        return oEmpresaRepository.findAll();
+    }
+
     public EmpresaEntity get(Long id) {
         return oEmpresaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
@@ -161,15 +156,13 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
     }
 
     public EmpresaEntity randomSelection() {
-        List<Long> listaIds = oEmpresaRepository.findAllIds(); //  método para obtener los IDs añadido en el repository
+        List<Long> listaIds = oEmpresaRepository.findAllIds(); // método para obtener los IDs añadido en el repository
         if (listaIds.isEmpty()) {
             throw new ResourceNotFoundException("No hay empresas disponibles para selección aleatoria");
         }
         Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
-        return oEmpresaRepository.findById(idAleatorio).orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+        return oEmpresaRepository.findById(idAleatorio)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
     }
-    
 
-
-   
 }

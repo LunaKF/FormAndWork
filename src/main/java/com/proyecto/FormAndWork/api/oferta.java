@@ -81,14 +81,21 @@ public ResponseEntity<OfertaEntity> update(@PathVariable Long id, @RequestBody O
 }
 
 
-    @PostMapping("/random/{cantidad}")
-    public ResponseEntity<Long> create(@PathVariable Long cantidad) {
+@PostMapping("/random/{cantidad}")
+    public ResponseEntity<Long> randomCreate(@PathVariable Long cantidad) {
         return new ResponseEntity<Long>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
     }
+
+@PutMapping("/random/{cantidad}")
+public ResponseEntity<Long> randomCreatePut(@PathVariable Long cantidad) {
+    return new ResponseEntity<>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
+}
 
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oOfertaService.deleteAll(), HttpStatus.OK);
     }
+
+
 
 }

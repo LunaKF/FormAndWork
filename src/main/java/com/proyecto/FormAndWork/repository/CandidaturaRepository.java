@@ -31,8 +31,13 @@ public interface CandidaturaRepository extends JpaRepository<CandidaturaEntity, 
         -El alumno tiene el alumnoId, y
         -La oferta está asociada a la empresaId.
      */    boolean existsByAlumnoIdAndOfertaEmpresaId(Long alumnoId, Long empresaId);
+
+
+     
     
     //--------------------------------------------------------------------
+
+
 
     @Query("SELECT DISTINCT c.alumno.id FROM CandidaturaEntity c WHERE c.oferta.empresa.id = :empresaId")
     List<Long> findAlumnoIdsByOfertaEmpresaId(@Param("empresaId") Long empresaId);
