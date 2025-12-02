@@ -174,7 +174,7 @@ public class AuthService {
             return false;
         }
     }
-
+/* 
     public Boolean isAdmin() {
         String emailSession = oHttpServletRequest.getAttribute("email").toString();
         if (emailSession.equals("admin@ausias.es")) {
@@ -183,6 +183,20 @@ public class AuthService {
             return false;
         }
     }
+*/
+
+public Boolean isAdmin() {
+    Object emailAttr = oHttpServletRequest.getAttribute("email");
+
+    // DEBUG: para ver qué email está usando el backend
+    System.out.println(">>> isAdmin() - email en sesión = " + emailAttr);
+
+    if (emailAttr == null) {
+        return false;
+    }
+
+    return emailAttr.toString().equalsIgnoreCase(strEmail); // usa el del properties
+}
 
     // Metodos para comprobar si el usuario autenticado es el dueño de los datos 
     public Boolean isAlumnoWithItsOwnData(Long id) {

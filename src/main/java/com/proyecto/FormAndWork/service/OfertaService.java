@@ -85,96 +85,98 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
                 new String[]{"Cristalero/a", "Ceramista", "Técnico de calidad en vidrio"});
     }
 
-public Long randomCreate(Long cantidad) {
-    for (int i = 0; i < cantidad; i++) {
-        OfertaEntity o = new OfertaEntity();
+    public Long randomCreate(Long cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            OfertaEntity o = new OfertaEntity();
 
-        // 1) Empresa primero → sector coherente
-        EmpresaEntity empresa = Optional.ofNullable(oEmpresaService.randomSelection())
-            .orElseThrow(() -> new RuntimeException("No hay empresas disponibles"));
-        SectorEntity sector = empresa.getSector();
+            // 1) Empresa primero → sector coherente
+            EmpresaEntity empresa = Optional.ofNullable(oEmpresaService.randomSelection())
+                    .orElseThrow(() -> new RuntimeException("No hay empresas disponibles"));
+            SectorEntity sector = empresa.getSector();
 
-        // 2) Título alineado a tu catálogo
-        String sectorClave = (String) ofertasEmpleo.keySet().toArray()
-            [oRandomService.getRandomInt(0, ofertasEmpleo.size() - 1)];
+            // 2) Título alineado a tu catálogo
+            String sectorClave = (String) ofertasEmpleo.keySet().toArray()[oRandomService.getRandomInt(0, ofertasEmpleo.size() - 1)];
 
-        String[] posibles = ofertasEmpleo.get(sectorClave);
-        String titulo = posibles[oRandomService.getRandomInt(0, posibles.length - 1)];
+            String[] posibles = ofertasEmpleo.get(sectorClave);
+            String titulo = posibles[oRandomService.getRandomInt(0, posibles.length - 1)];
 
-        o.setTitulo(titulo);
-        o.setEmpresa(empresa);
-        o.setSector(sector);
+            o.setTitulo(titulo);
+            o.setEmpresa(empresa);
+            o.setSector(sector);
 
-        // 3) Descripción rica (máx ~520 chars para no pasar 555)
-        String descripcion = buildDescripcionLarga(sectorClave, titulo, empresa.getNombre());
-        if (descripcion.length() > 540) { // margen de seguridad
-            descripcion = descripcion.substring(0, 540);
+            // 3) Descripción rica (máx ~520 chars para no pasar 555)
+            String descripcion = buildDescripcionLarga(sectorClave, titulo, empresa.getNombre());
+            if (descripcion.length() > 540) { // margen de seguridad
+                descripcion = descripcion.substring(0, 540);
+            }
+            o.setDescripcion(descripcion);
+
+            oOfertaRepository.save(o);
         }
-        o.setDescripcion(descripcion);
-
-        oOfertaRepository.save(o);
-    }
-    return oOfertaRepository.count();
-}
-
-/** Genera 3–6 frases: rol, tareas, requisitos y beneficios */
-private String buildDescripcionLarga(String sector, String titulo, String empresa) {
-    String[] inicios = {
-        "Buscamos", "Seleccionamos", "Se requiere", "Nos encantaría incorporar",
-        "Ampliamos equipo con", "Abrimos vacante para"
-    };
-    String[] tareas = {
-        "participar en proyectos de alto impacto",
-        "colaborar con equipos multidisciplinares",
-        "mejorar procesos internos y la calidad del servicio",
-        "desarrollar soluciones escalables y mantenibles",
-        "garantizar el cumplimiento de estándares y buenas prácticas",
-        "dar soporte técnico y funcional a las áreas implicadas"
-    };
-    String[] requisitos = {
-        "al menos 1 año de experiencia", "capacidad de aprendizaje continuo",
-        "orientación a resultados y trabajo en equipo", "comunicación efectiva",
-        "conocimientos sólidos en el área", "actitud proactiva y resolutiva"
-    };
-    String[] beneficios = {
-        "horario flexible y modalidad híbrida",
-        "plan de carrera y formación continua",
-        "ambiente colaborativo y tecnología puntera",
-        "conciliación y beneficios sociales",
-        "participación en proyectos innovadores"
-    };
-
-    StringBuilder sb = new StringBuilder(520);
-    sb.append(inicios[oRandomService.getRandomInt(0, inicios.length - 1)])
-      .append(" un/a ").append(titulo.toLowerCase())
-      .append(" para ").append(empresa).append(", dentro del sector de ")
-      .append(sector.toLowerCase()).append(". ");
-
-    // 1–2 frases de tareas
-    int nt = oRandomService.getRandomInt(1, 2);
-    for (int i = 0; i < nt; i++) {
-        sb.append("La persona seleccionada deberá ")
-          .append(tareas[oRandomService.getRandomInt(0, tareas.length - 1)])
-          .append(". ");
+        return oOfertaRepository.count();
     }
 
-    // 1–2 frases de requisitos
-    int nr = oRandomService.getRandomInt(1, 2);
-    sb.append("Se valora ");
-    for (int i = 0; i < nr; i++) {
-        if (i > 0) sb.append(", ");
-        sb.append(requisitos[oRandomService.getRandomInt(0, requisitos.length - 1)]);
+    /**
+     * Genera 3–6 frases: rol, tareas, requisitos y beneficios
+     */
+    private String buildDescripcionLarga(String sector, String titulo, String empresa) {
+        String[] inicios = {
+            "Buscamos", "Seleccionamos", "Se requiere", "Nos encantaría incorporar",
+            "Ampliamos equipo con", "Abrimos vacante para"
+        };
+        String[] tareas = {
+            "participar en proyectos de alto impacto",
+            "colaborar con equipos multidisciplinares",
+            "mejorar procesos internos y la calidad del servicio",
+            "desarrollar soluciones escalables y mantenibles",
+            "garantizar el cumplimiento de estándares y buenas prácticas",
+            "dar soporte técnico y funcional a las áreas implicadas"
+        };
+        String[] requisitos = {
+            "al menos 1 año de experiencia", "capacidad de aprendizaje continuo",
+            "orientación a resultados y trabajo en equipo", "comunicación efectiva",
+            "conocimientos sólidos en el área", "actitud proactiva y resolutiva"
+        };
+        String[] beneficios = {
+            "horario flexible y modalidad híbrida",
+            "plan de carrera y formación continua",
+            "ambiente colaborativo y tecnología puntera",
+            "conciliación y beneficios sociales",
+            "participación en proyectos innovadores"
+        };
+
+        StringBuilder sb = new StringBuilder(520);
+        sb.append(inicios[oRandomService.getRandomInt(0, inicios.length - 1)])
+                .append(" un/a ").append(titulo.toLowerCase())
+                .append(" para ").append(empresa).append(", dentro del sector de ")
+                .append(sector.toLowerCase()).append(". ");
+
+        // 1–2 frases de tareas
+        int nt = oRandomService.getRandomInt(1, 2);
+        for (int i = 0; i < nt; i++) {
+            sb.append("La persona seleccionada deberá ")
+                    .append(tareas[oRandomService.getRandomInt(0, tareas.length - 1)])
+                    .append(". ");
+        }
+
+        // 1–2 frases de requisitos
+        int nr = oRandomService.getRandomInt(1, 2);
+        sb.append("Se valora ");
+        for (int i = 0; i < nr; i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            sb.append(requisitos[oRandomService.getRandomInt(0, requisitos.length - 1)]);
+        }
+        sb.append(". ");
+
+        // 1 frase de beneficios
+        sb.append("Ofrecemos ")
+                .append(beneficios[oRandomService.getRandomInt(0, beneficios.length - 1)])
+                .append(".");
+
+        return sb.toString();
     }
-    sb.append(". ");
-
-    // 1 frase de beneficios
-    sb.append("Ofrecemos ")
-      .append(beneficios[oRandomService.getRandomInt(0, beneficios.length - 1)])
-      .append(".");
-
-    return sb.toString();
-}
-
 
     public Page<OfertaEntity> getPage(Pageable oPageable, Optional<String> filter) {
 
@@ -228,41 +230,160 @@ private String buildDescripcionLarga(String sector, String titulo, String empres
         }
     }
 
+    @Override
     public OfertaEntity get(Long id) {
 
-        return oOfertaRepository.findById(id)
+        // 1. Buscar la oferta
+        OfertaEntity oferta = oOfertaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
-        // return oOfertaRepository.findById(id).get();
+
+        // 2. Si NO hay sesión → usuario anónimo (público) → puede verla
+        if (!oAuthService.isSessionActive()) {
+            return oferta;
+        }
+        // 3. Admin → puede ver cualquier oferta
+        if (oAuthService.isAdmin()) {
+            return oferta;
+        }
+        // 4. Alumno → puede ver cualquier oferta
+        if (oAuthService.isAlumno()) {
+            return oferta;
+        }
+        // 5. Empresa → solo puede ver sus propias ofertas
+        if (oAuthService.isEmpresa()) {
+            EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+            if (!oferta.getEmpresa().getId().equals(empresaAutenticada.getId())) {
+                throw new UnauthorizedAccessException("No puedes ver una oferta que no es tuya");
+            }
+
+            return oferta;
+        }
+        // 6. Cualquier otro tipo raro → por si acaso
+        throw new UnauthorizedAccessException("No tienes permisos para ver esta oferta");
     }
 
     public Long count() {
         return oOfertaRepository.count();
     }
 
+    @Override
     public Long delete(Long id) {
-        oOfertaRepository.deleteById(id);
-        return 1L;
+
+        if (!oAuthService.isSessionActive()) {
+            throw new UnauthorizedAccessException("Debes iniciar sesión para eliminar una oferta");
+        }
+
+        // Buscar la oferta
+        OfertaEntity oferta = oOfertaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
+
+        // ADMIN → puede borrar cualquier oferta
+        if (oAuthService.isAdmin()) {
+            oOfertaRepository.delete(oferta);
+            return 1L;
+        }
+
+        // EMPRESA → solo puede borrar sus propias ofertas
+        if (oAuthService.isEmpresa()) {
+            EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+            if (!oferta.getEmpresa().getId().equals(empresaAutenticada.getId())) {
+                throw new UnauthorizedAccessException("No puedes eliminar una oferta que no es tuya");
+            }
+
+            oOfertaRepository.delete(oferta);
+            return 1L;
+        }
+
+        // ALUMNO u otro tipo → prohibido
+        throw new UnauthorizedAccessException("No tienes permisos para eliminar ofertas");
     }
 
+    @Override
     public OfertaEntity create(OfertaEntity oOfertaEntity) {
-        return oOfertaRepository.save(oOfertaEntity);
+
+        if (!oAuthService.isSessionActive()) {
+            throw new UnauthorizedAccessException("Debes iniciar sesión para crear una oferta");
+        }
+
+        // ADMIN → puede crear para cualquier empresa
+        if (oAuthService.isAdmin()) {
+            oOfertaEntity.setId(null); // por si acaso
+            return oOfertaRepository.save(oOfertaEntity);
+        }
+
+        // EMPRESA → solo puede crear ofertas propias
+        if (oAuthService.isEmpresa()) {
+            EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+            // Ignoramos la empresa que venga del frontend y forzamos la del token
+            oOfertaEntity.setId(null);
+            oOfertaEntity.setEmpresa(empresaAutenticada);
+
+            return oOfertaRepository.save(oOfertaEntity);
+        }
+
+        // ALUMNO u otro → no puede
+        throw new UnauthorizedAccessException("Los alumnos no pueden crear ofertas");
     }
 
+    @Override
     public OfertaEntity update(OfertaEntity oOfertaEntity) {
-        OfertaEntity oOfertaEntityFromDatabase = oOfertaRepository.findById(oOfertaEntity.getId()).get();
-        if (oOfertaEntity.getTitulo() != null) {
-            oOfertaEntityFromDatabase.setTitulo(oOfertaEntity.getTitulo());
+
+        if (!oAuthService.isSessionActive()) {
+            throw new UnauthorizedAccessException("Debes iniciar sesión para actualizar una oferta");
         }
-        if (oOfertaEntity.getDescripcion() != null) {
-            oOfertaEntityFromDatabase.setDescripcion(oOfertaEntity.getDescripcion());
+
+        // Obtenemos la oferta original
+        OfertaEntity oOfertaEntityFromDatabase = oOfertaRepository.findById(oOfertaEntity.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
+
+        // ADMIN → puede modificar cualquier oferta
+        if (oAuthService.isAdmin()) {
+
+            if (oOfertaEntity.getTitulo() != null) {
+                oOfertaEntityFromDatabase.setTitulo(oOfertaEntity.getTitulo());
+            }
+            if (oOfertaEntity.getDescripcion() != null) {
+                oOfertaEntityFromDatabase.setDescripcion(oOfertaEntity.getDescripcion());
+            }
+            if (oOfertaEntity.getSector() != null) {
+                oOfertaEntityFromDatabase.setSector(oOfertaEntity.getSector());
+            }
+            if (oOfertaEntity.getEmpresa() != null) {
+                // El admin puede incluso reasignar la oferta a otra empresa
+                oOfertaEntityFromDatabase.setEmpresa(oOfertaEntity.getEmpresa());
+            }
+
+            return oOfertaRepository.save(oOfertaEntityFromDatabase);
         }
-        if (oOfertaEntity.getSector() != null) {
-            oOfertaEntityFromDatabase.setSector(oOfertaEntity.getSector());
+
+        // EMPRESA → solo si la oferta es suya
+        if (oAuthService.isEmpresa()) {
+            EmpresaEntity empresaAutenticada = oAuthService.getEmpresaFromToken();
+
+            if (!oOfertaEntityFromDatabase.getEmpresa().getId().equals(empresaAutenticada.getId())) {
+                throw new UnauthorizedAccessException("No puedes modificar una oferta que no es tuya");
+            }
+
+            if (oOfertaEntity.getTitulo() != null) {
+                oOfertaEntityFromDatabase.setTitulo(oOfertaEntity.getTitulo());
+            }
+            if (oOfertaEntity.getDescripcion() != null) {
+                oOfertaEntityFromDatabase.setDescripcion(oOfertaEntity.getDescripcion());
+            }
+            if (oOfertaEntity.getSector() != null) {
+                oOfertaEntityFromDatabase.setSector(oOfertaEntity.getSector());
+            }
+
+            // OJO: una empresa NO puede cambiar el propietario de la oferta
+            // ignoramos cualquier empresa que venga en el body
+            return oOfertaRepository.save(oOfertaEntityFromDatabase);
         }
-        if (oOfertaEntity.getEmpresa() != null) {
-            oOfertaEntityFromDatabase.setEmpresa(oOfertaEntity.getEmpresa());
-        }
-        return oOfertaRepository.save(oOfertaEntityFromDatabase);
+
+        // ALUMNO u otro → prohibido
+        throw new UnauthorizedAccessException("No tienes permisos para modificar ofertas");
     }
 
     public Long deleteAll() {
