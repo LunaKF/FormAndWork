@@ -137,28 +137,29 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         return 1L;
     }
 
-    public EmpresaEntity create(EmpresaEntity oEmpresaEntity) {
+public EmpresaEntity create(EmpresaEntity oEmpresaEntity) {
 
-        // Si llega sin password, intentamos conservarla
-        if (oEmpresaEntity.getPassword() == null || oEmpresaEntity.getPassword().isBlank()) {
-
-            // Si trae id, es claramente una "actualización" (aunque entre por create)
-            if (oEmpresaEntity.getId() != null) {
-                EmpresaEntity db = oEmpresaRepository.findById(oEmpresaEntity.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
-
-                oEmpresaEntity.setPassword(db.getPassword());
-            } else {
-                // si NO trae id y tampoco password -> decide una política:
-                // 1) lanzar error claro
-                throw new IllegalArgumentException("Password es obligatorio al crear una empresa");
-                // o 2) asignar una por defecto (NO recomendado)
-            }
-        }
-
-        // Si también viene sector null pero BD lo necesita, aquí podrías validar igual.
-        return oEmpresaRepository.save(oEmpresaEntity);
+    // ✅ VALIDACIONES mínimas
+    if (oEmpresaEntity.getNombre() == null || oEmpresaEntity.getNombre().isBlank()) {
+        throw new IllegalArgumentException("Nombre es obligatorio");
     }
+    if (oEmpresaEntity.getEmail() == null || oEmpresaEntity.getEmail().isBlank()) {
+        throw new IllegalArgumentException("Email es obligatorio");
+    }
+    if (oEmpresaEntity.getSector() == null || oEmpresaEntity.getSector().getId() == null) {
+        throw new IllegalArgumentException("Sector es obligatorio");
+    }
+
+    // ✅ Si llega sin password -> asignar una por defecto (para no romper DB)
+    if (oEmpresaEntity.getPassword() == null || oEmpresaEntity.getPassword().isBlank()) {
+        // opción simple (igual que randomCreate):
+        oEmpresaEntity.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278");
+        // (si luego quieres: aquí generamos password aleatoria + la mandamos por email)
+    }
+
+    return oEmpresaRepository.save(oEmpresaEntity);
+}
+
 
 public EmpresaEntity update(EmpresaEntity oEmpresaEntity) {
 
