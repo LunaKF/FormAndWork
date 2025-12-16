@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.FormAndWork.entity.AlumnoEntity;
 import com.proyecto.FormAndWork.entity.CandidaturaEntity;
+import com.proyecto.FormAndWork.service.AuthService;
 import com.proyecto.FormAndWork.service.CandidaturaService;
 
 
@@ -30,6 +31,9 @@ import com.proyecto.FormAndWork.service.CandidaturaService;
 public class candidatura {
     @Autowired
     CandidaturaService oCandidaturaService;
+
+    @Autowired
+    AuthService oAuthService;
 
     @GetMapping("")
     public ResponseEntity<Page<CandidaturaEntity>> getPage(
@@ -87,6 +91,19 @@ public class candidatura {
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oCandidaturaService.deleteAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/oferta/{id}/postular")
+    public ResponseEntity<CandidaturaEntity> postularAOferta(@PathVariable Long id) {
+        // Obtiene el alumno de la sesión (token)
+        AlumnoEntity oAlumno = oAuthService.getAlumnoFromToken();
+
+        // Delegar la creación a service. Implementar en CandidaturaService.createFromAlumnoToOferta(...)
+        // para que cree la entidad, fije la fecha del sistema y la guarde.
+        return new ResponseEntity<CandidaturaEntity>(
+            oCandidaturaService.createFromAlumnoToOferta(oAlumno.getId(), id),
+            HttpStatus.OK
+        );
     }
 
 }

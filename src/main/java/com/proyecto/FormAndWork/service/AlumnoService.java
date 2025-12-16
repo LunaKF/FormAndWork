@@ -32,83 +32,81 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     @Autowired
     CandidaturaRepository oCandidaturaRepository;
 
-// Nombres inclusivos y de muchas nacionalidades
+    // Nombres inclusivos y de muchas nacionalidades
     private final String[] arrNombres = {
-    // Españoles y latinos
-    "Pepe", "Laura", "Ignacio", "María", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-    "Ana", "Rafa", "Manolo", "Lucía", "Marta", "Sara", "Rocío", "Diego", "Andrés", "Clara",
-    "Valentina", "Camila", "Mateo", "Sofía", "Juan", "Isabella", "Emilio", "Fernanda",
+            // Españoles y latinos
+            "Pepe", "Laura", "Ignacio", "María", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
+            "Ana", "Rafa", "Manolo", "Lucía", "Marta", "Sara", "Rocío", "Diego", "Andrés", "Clara",
+            "Valentina", "Camila", "Mateo", "Sofía", "Juan", "Isabella", "Emilio", "Fernanda",
 
-    // Anglosajones
-    "John", "Emily", "Michael", "Jessica", "William", "Olivia", "James", "Emma",
-    "Robert", "Sophia", "David", "Isabel", "Daniel", "Chloe", "Andrew", "Madison",
-    "Alex", "Taylor", "Jordan", "Sam", "Casey", "Jamie",
+            // Anglosajones
+            "John", "Emily", "Michael", "Jessica", "William", "Olivia", "James", "Emma",
+            "Robert", "Sophia", "David", "Isabel", "Daniel", "Chloe", "Andrew", "Madison",
+            "Alex", "Taylor", "Jordan", "Sam", "Casey", "Jamie",
 
-    // Franceses
-    "Pierre", "Marie", "Jean", "Camille", "Élise", "Antoine", "Luc", "Nathalie", "François",
-    "Juliette", "Chloé", "Mathieu", "Amélie", "Noémie", "Sophie",
+            // Franceses
+            "Pierre", "Marie", "Jean", "Camille", "Élise", "Antoine", "Luc", "Nathalie", "François",
+            "Juliette", "Chloé", "Mathieu", "Amélie", "Noémie", "Sophie",
 
-    // Alemanes
-    "Hans", "Greta", "Lukas", "Katrin", "Karl", "Anja", "Stefan", "Marta", "Heinrich", "Lena",
+            // Alemanes
+            "Hans", "Greta", "Lukas", "Katrin", "Karl", "Anja", "Stefan", "Marta", "Heinrich", "Lena",
 
-    // Italianos
-    "Giovanni", "Alessandro", "Francesca", "Giulia", "Marco", "Sabrina", "Luca", "Matteo",
-    "Chiara", "Andrea", "Federica", "Raffaele",
+            // Italianos
+            "Giovanni", "Alessandro", "Francesca", "Giulia", "Marco", "Sabrina", "Luca", "Matteo",
+            "Chiara", "Andrea", "Federica", "Raffaele",
 
-    // Árabes
-    "Mohammed", "Aisha", "Fatima", "Ali", "Omar", "Layla", "Yusuf", "Khalid", "Samira",
-    "Hassan", "Mariam", "Abdul", "Nadia", "Karim", "Iman",
+            // Árabes
+            "Mohammed", "Aisha", "Fatima", "Ali", "Omar", "Layla", "Yusuf", "Khalid", "Samira",
+            "Hassan", "Mariam", "Abdul", "Nadia", "Karim", "Iman",
 
-    // Africanos
-    "Kwame", "Ama", "Ayo", "Zuri", "Nia", "Taye", "Chinua", "Oba", "Lamine", "Fatou", "Aminata",
-    "Malik", "Kofi", "Adama", "Sefu",
+            // Africanos
+            "Kwame", "Ama", "Ayo", "Zuri", "Nia", "Taye", "Chinua", "Oba", "Lamine", "Fatou", "Aminata",
+            "Malik", "Kofi", "Adama", "Sefu",
 
-    // Asiáticos
-    "Hiroshi", "Yuki", "Sakura", "Kenji", "Haruto", "Aya", "Takumi", "Mei", "Wei", "Xiao",
-    "Jin", "Hana", "Min", "Soo", "Jihoon", "Akira",
+            // Asiáticos
+            "Hiroshi", "Yuki", "Sakura", "Kenji", "Haruto", "Aya", "Takumi", "Mei", "Wei", "Xiao",
+            "Jin", "Hana", "Min", "Soo", "Jihoon", "Akira",
 
-    // Nombres neutros/unisex
-    "Alex", "Sky", "River", "Taylor", "Morgan", "Casey", "Sam", "Charlie", "Jordan", "Dakota",
-    "Robin", "Reese", "Elliot"
-};
+            // Nombres neutros/unisex
+            "Alex", "Sky", "River", "Taylor", "Morgan", "Casey", "Sam", "Charlie", "Jordan", "Dakota",
+            "Robin", "Reese", "Elliot"
+    };
 
+    // Apellidos internacionales
+    private final String[] arrApellidos = {
+            // Españoles y latinos
+            "Sancho", "Gómez", "Pérez", "Rodríguez", "García", "Fernández", "López", "Martínez", "Sánchez",
+            "González", "Jiménez", "Ruiz", "Moreno", "Castro", "Silva", "Torres", "Vega", "Delgado",
+            "Muñoz", "Ramos", "Navarro", "Cabrera",
 
-// Apellidos internacionales
-private final String[] arrApellidos = {
-    // Españoles y latinos
-    "Sancho", "Gómez", "Pérez", "Rodríguez", "García", "Fernández", "López", "Martínez", "Sánchez",
-    "González", "Jiménez", "Ruiz", "Moreno", "Castro", "Silva", "Torres", "Vega", "Delgado",
-    "Muñoz", "Ramos", "Navarro", "Cabrera",
+            // Anglosajones
+            "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Taylor", "Anderson",
+            "Thomas", "Moore", "Jackson", "White", "Harris", "Clark", "Lewis", "Walker", "Allen",
 
-    // Anglosajones
-    "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Taylor", "Anderson",
-    "Thomas", "Moore", "Jackson", "White", "Harris", "Clark", "Lewis", "Walker", "Allen",
+            // Franceses
+            "Dubois", "Moreau", "Laurent", "Lefevre", "Simon", "Michel", "Garcia", "Noel", "Chevalier",
+            "Fontaine", "Blanc", "Dupont", "Renard",
 
-    // Franceses
-    "Dubois", "Moreau", "Laurent", "Lefevre", "Simon", "Michel", "Garcia", "Noel", "Chevalier",
-    "Fontaine", "Blanc", "Dupont", "Renard",
+            // Alemanes
+            "Schmidt", "Müller", "Schneider", "Fischer", "Weber", "Klein", "Wagner", "Becker",
+            "Hoffmann", "Bauer", "Keller", "Schulz",
 
-    // Alemanes
-    "Schmidt", "Müller", "Schneider", "Fischer", "Weber", "Klein", "Wagner", "Becker",
-    "Hoffmann", "Bauer", "Keller", "Schulz",
+            // Italianos
+            "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi", "Romano", "Colombo", "Ricci",
+            "Greco", "Marino", "Bruno", "Gallo",
 
-    // Italianos
-    "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi", "Romano", "Colombo", "Ricci",
-    "Greco", "Marino", "Bruno", "Gallo",
+            // Árabes
+            "Al-Farsi", "Haddad", "Abdallah", "Rahman", "Nasser", "Hussein", "Farouk", "Karim",
+            "Othman", "Bakr", "Saidi", "Zayed", "Salem",
 
-    // Árabes
-    "Al-Farsi", "Haddad", "Abdallah", "Rahman", "Nasser", "Hussein", "Farouk", "Karim",
-    "Othman", "Bakr", "Saidi", "Zayed", "Salem",
+            // Africanos
+            "Okafor", "Mensah", "Diop", "Kamara", "Diallo", "Traoré", "Mwangi", "Ndlovu", "Chukwu",
+            "Koulibaly", "Obi", "Zulu", "Adebayo",
 
-    // Africanos
-    "Okafor", "Mensah", "Diop", "Kamara", "Diallo", "Traoré", "Mwangi", "Ndlovu", "Chukwu",
-    "Koulibaly", "Obi", "Zulu", "Adebayo",
-
-    // Asiáticos
-    "Tanaka", "Suzuki", "Kobayashi", "Matsumoto", "Nakamura", "Kim", "Park", "Lee",
-    "Choi", "Nguyen", "Tran", "Pham", "Wang", "Zhang", "Zhao", "Chen", "Huang"
-};
-
+            // Asiáticos
+            "Tanaka", "Suzuki", "Kobayashi", "Matsumoto", "Nakamura", "Kim", "Park", "Lee",
+            "Choi", "Nguyen", "Tran", "Pham", "Wang", "Zhang", "Zhao", "Chen", "Huang"
+    };
 
     public Page<AlumnoEntity> getPage(Pageable oPageable, Optional<String> filter) {
         if (oAuthService.isAdmin()) {
@@ -144,15 +142,17 @@ private final String[] arrApellidos = {
         }
     }
 
-
-    /* public Page<AlumnoEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
-        if (filter.isPresent()) {
-            return oAlumnoRepository.findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
-                    filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
-        } else {
-            return oAlumnoRepository.findBySectorId(oPageable, id_sector);
-        }
-    }
+    /*
+     * public Page<AlumnoEntity> getPageXsector(Pageable oPageable, Optional<String>
+     * filter, Long id_sector) {
+     * if (filter.isPresent()) {
+     * return oAlumnoRepository.
+     * findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
+     * filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
+     * } else {
+     * return oAlumnoRepository.findBySectorId(oPageable, id_sector);
+     * }
+     * }
      */
     public Page<AlumnoEntity> getPageXsector(Pageable oPageable, Optional<String> filter, Long id_sector) {
 
@@ -161,7 +161,7 @@ private final String[] arrApellidos = {
                 return oAlumnoRepository.findByNombreContainingOrApe1ContainingOrApe2ContainingOrEmailContaining(
                         filter.get(), filter.get(), filter.get(), filter.get(), oPageable);
             } else {
-                return oAlumnoRepository.findBySectorId( id_sector, oPageable);
+                return oAlumnoRepository.findBySectorId(id_sector, oPageable);
             }
 
         } else if (oAuthService.isAlumno()) {
@@ -217,7 +217,8 @@ private final String[] arrApellidos = {
         } else if (oAuthService.isEmpresa()) {
             Long empresaId = oAuthService.getEmpresaFromToken().getId();
 
-            // Verificamos si el alumno tiene alguna candidatura en alguna oferta de esta empresa
+            // Verificamos si el alumno tiene alguna candidatura en alguna oferta de esta
+            // empresa
             boolean tieneCandidatura = oCandidaturaRepository.existsByAlumnoIdAndOfertaEmpresaId(id, empresaId);
 
             if (tieneCandidatura) {
@@ -290,23 +291,23 @@ private final String[] arrApellidos = {
 
     }
 
-public Long randomCreate(Long cantidad) {
-    for (int i = 0; i < cantidad; i++) {
-        AlumnoEntity a = new AlumnoEntity();
-        a.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
-        a.setApe1(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
-        a.setApe2(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
-        a.setSector(oSectorService.randomSelection());
+    public Long randomCreate(Long cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            AlumnoEntity a = new AlumnoEntity();
+            a.setNombre(arrNombres[oRandomService.getRandomInt(0, arrNombres.length - 1)]);
+            a.setApe1(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
+            a.setApe2(arrApellidos[oRandomService.getRandomInt(0, arrApellidos.length - 1)]);
+            a.setSector(oSectorService.randomSelection());
 
-        String base = (a.getNombre() + a.getApe1())
-            .toLowerCase().replaceAll("[^a-z0-9]", "");
-        a.setEmail("email" + base + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
+            String base = (a.getNombre() + a.getApe1())
+                    .toLowerCase().replaceAll("[^a-z0-9]", "");
+            a.setEmail("email" + base + oRandomService.getRandomInt(999, 9999) + "@gmail.com");
 
-        a.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278"); // 12345@
-        oAlumnoRepository.save(a);
+            a.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278"); // 12345@
+            oAlumnoRepository.save(a);
+        }
+        return oAlumnoRepository.count();
     }
-    return oAlumnoRepository.count();
-}
 
     public AlumnoEntity randomSelection() {
         List<Long> listaIds = oAlumnoRepository.findAllIds();
@@ -316,6 +317,15 @@ public Long randomCreate(Long cantidad) {
         Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
         return oAlumnoRepository.findById(idAleatorio)
                 .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
+    }
+
+    // get all without pagination
+    public Iterable<AlumnoEntity> getAll() {
+        if (oAuthService.isAdmin()) {
+            return oAlumnoRepository.findAll();
+        } else {
+            throw new UnauthorizedAccessException("No tienes permisos para acceder a la lista de alumnos");
+        }
     }
 
 }

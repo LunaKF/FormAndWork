@@ -45,44 +45,44 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
 
     {
         ofertasEmpleo.put("Administración y gestión",
-                new String[]{"Asistente administrativo", "Contable", "Secretario/a"});
-        ofertasEmpleo.put("Agraria", new String[]{"Agricultor/a", "Ganadero/a", "Técnico agrícola"});
+                new String[] { "Asistente administrativo", "Contable", "Secretario/a" });
+        ofertasEmpleo.put("Agraria", new String[] { "Agricultor/a", "Ganadero/a", "Técnico agrícola" });
         ofertasEmpleo.put("Artes gráficas",
-                new String[]{"Diseñador gráfico", "Impresor/a", "Técnico de preimpresión"});
+                new String[] { "Diseñador gráfico", "Impresor/a", "Técnico de preimpresión" });
         ofertasEmpleo.put("Artes y artesanías",
-                new String[]{"Artista plástico", "Artesano/a", "Diseñador de joyas"});
+                new String[] { "Artista plástico", "Artesano/a", "Diseñador de joyas" });
         ofertasEmpleo.put("Comercio y marketing",
-                new String[]{"Vendedor/a", "Gestor de marketing", "Community Manager"});
+                new String[] { "Vendedor/a", "Gestor de marketing", "Community Manager" });
         ofertasEmpleo.put("Electricidad y electrónica",
-                new String[]{"Técnico electricista", "Ingeniero electrónico", "Operador de sistemas"});
+                new String[] { "Técnico electricista", "Ingeniero electrónico", "Operador de sistemas" });
         ofertasEmpleo.put("Energía y agua",
-                new String[]{"Técnico de energía solar", "Ingeniero de energía eólica", "Operador de planta"});
+                new String[] { "Técnico de energía solar", "Ingeniero de energía eólica", "Operador de planta" });
         ofertasEmpleo.put("Fabricación mecánica",
-                new String[]{"Técnico de mantenimiento", "Ingeniero mecánico", "Operador de maquinaria"});
-        ofertasEmpleo.put("Hostelería y turismo", new String[]{"Camarero/a", "Recepcionista de hotel", "Chef"});
-        ofertasEmpleo.put("Imagen personal", new String[]{"Estilista", "Maquillador/a", "Peluquero/a"});
-        ofertasEmpleo.put("Imagen y sonido", new String[]{"Camarógrafo", "Sonidista", "Editor de video"});
+                new String[] { "Técnico de mantenimiento", "Ingeniero mecánico", "Operador de maquinaria" });
+        ofertasEmpleo.put("Hostelería y turismo", new String[] { "Camarero/a", "Recepcionista de hotel", "Chef" });
+        ofertasEmpleo.put("Imagen personal", new String[] { "Estilista", "Maquillador/a", "Peluquero/a" });
+        ofertasEmpleo.put("Imagen y sonido", new String[] { "Camarógrafo", "Sonidista", "Editor de video" });
         ofertasEmpleo.put("Informática y comunicaciones",
-                new String[]{"Desarrollador Java", "Analista de datos", "Técnico en redes"});
-        ofertasEmpleo.put("Instalación y mantenimiento", new String[]{"Técnico de climatización",
-            "Instalador de sistemas de seguridad", "Mecánico de electrodomésticos"});
+                new String[] { "Desarrollador Java", "Analista de datos", "Técnico en redes" });
+        ofertasEmpleo.put("Instalación y mantenimiento", new String[] { "Técnico de climatización",
+                "Instalador de sistemas de seguridad", "Mecánico de electrodomésticos" });
         ofertasEmpleo.put("Madera, mueble y corcho",
-                new String[]{"Carpintero/a", "Diseñador de interiores", "Ebanista"});
+                new String[] { "Carpintero/a", "Diseñador de interiores", "Ebanista" });
         ofertasEmpleo.put("Marítimo-pesquera",
-                new String[]{"Pescador/a", "Técnico de acuicultura", "Capitán de barco"});
+                new String[] { "Pescador/a", "Técnico de acuicultura", "Capitán de barco" });
         ofertasEmpleo.put("Química",
-                new String[]{"Técnico de laboratorio", "Químico/a analista", "Investigador/a químico"});
-        ofertasEmpleo.put("Sanidad", new String[]{"Enfermero/a", "Médico general", "Técnico de laboratorio"});
+                new String[] { "Técnico de laboratorio", "Químico/a analista", "Investigador/a químico" });
+        ofertasEmpleo.put("Sanidad", new String[] { "Enfermero/a", "Médico general", "Técnico de laboratorio" });
         ofertasEmpleo.put("Seguridad y medio ambiente",
-                new String[]{"Técnico de seguridad", "Inspector ambiental", "Gestor de residuos"});
+                new String[] { "Técnico de seguridad", "Inspector ambiental", "Gestor de residuos" });
         ofertasEmpleo.put("Servicios socioculturales y a la comunidad",
-                new String[]{"Educador/a social", "Trabajador/a social", "Psicólogo/a"});
+                new String[] { "Educador/a social", "Trabajador/a social", "Psicólogo/a" });
         ofertasEmpleo.put("Textil, confección y piel",
-                new String[]{"Diseñador de moda", "Sastre/a", "Operador de máquina de coser"});
+                new String[] { "Diseñador de moda", "Sastre/a", "Operador de máquina de coser" });
         ofertasEmpleo.put("Transporte y mantenimiento de vehículos",
-                new String[]{"Conductor de camión", "Mecánico de automóviles", "Técnico de logística"});
+                new String[] { "Conductor de camión", "Mecánico de automóviles", "Técnico de logística" });
         ofertasEmpleo.put("Vidrio y cerámica",
-                new String[]{"Cristalero/a", "Ceramista", "Técnico de calidad en vidrio"});
+                new String[] { "Cristalero/a", "Ceramista", "Técnico de calidad en vidrio" });
     }
 
     public Long randomCreate(Long cantidad) {
@@ -95,7 +95,8 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
             SectorEntity sector = empresa.getSector();
 
             // 2) Título alineado a tu catálogo
-            String sectorClave = (String) ofertasEmpleo.keySet().toArray()[oRandomService.getRandomInt(0, ofertasEmpleo.size() - 1)];
+            String sectorClave = (String) ofertasEmpleo.keySet().toArray()[oRandomService.getRandomInt(0,
+                    ofertasEmpleo.size() - 1)];
 
             String[] posibles = ofertasEmpleo.get(sectorClave);
             String titulo = posibles[oRandomService.getRandomInt(0, posibles.length - 1)];
@@ -121,28 +122,28 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
      */
     private String buildDescripcionLarga(String sector, String titulo, String empresa) {
         String[] inicios = {
-            "Buscamos", "Seleccionamos", "Se requiere", "Nos encantaría incorporar",
-            "Ampliamos equipo con", "Abrimos vacante para"
+                "Buscamos", "Seleccionamos", "Se requiere", "Nos encantaría incorporar",
+                "Ampliamos equipo con", "Abrimos vacante para"
         };
         String[] tareas = {
-            "participar en proyectos de alto impacto",
-            "colaborar con equipos multidisciplinares",
-            "mejorar procesos internos y la calidad del servicio",
-            "desarrollar soluciones escalables y mantenibles",
-            "garantizar el cumplimiento de estándares y buenas prácticas",
-            "dar soporte técnico y funcional a las áreas implicadas"
+                "participar en proyectos de alto impacto",
+                "colaborar con equipos multidisciplinares",
+                "mejorar procesos internos y la calidad del servicio",
+                "desarrollar soluciones escalables y mantenibles",
+                "garantizar el cumplimiento de estándares y buenas prácticas",
+                "dar soporte técnico y funcional a las áreas implicadas"
         };
         String[] requisitos = {
-            "al menos 1 año de experiencia", "capacidad de aprendizaje continuo",
-            "orientación a resultados y trabajo en equipo", "comunicación efectiva",
-            "conocimientos sólidos en el área", "actitud proactiva y resolutiva"
+                "al menos 1 año de experiencia", "capacidad de aprendizaje continuo",
+                "orientación a resultados y trabajo en equipo", "comunicación efectiva",
+                "conocimientos sólidos en el área", "actitud proactiva y resolutiva"
         };
         String[] beneficios = {
-            "horario flexible y modalidad híbrida",
-            "plan de carrera y formación continua",
-            "ambiente colaborativo y tecnología puntera",
-            "conciliación y beneficios sociales",
-            "participación en proyectos innovadores"
+                "horario flexible y modalidad híbrida",
+                "plan de carrera y formación continua",
+                "ambiente colaborativo y tecnología puntera",
+                "conciliación y beneficios sociales",
+                "participación en proyectos innovadores"
         };
 
         StringBuilder sb = new StringBuilder(520);
@@ -192,7 +193,7 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
                 }
             } else if (oAuthService.isAlumno()) {
                 AlumnoEntity oAlumnoAutenticado = oAuthService.getAlumnoFromToken();
-                return oOfertaRepository.findByAlumnoCandidatado(oAlumnoAutenticado.getId(), oPageable);
+                return oOfertaRepository.findAll(oPageable);
             } else if (oAuthService.isAdmin()) {
                 return oOfertaRepository.findAll(oPageable);
 
@@ -399,6 +400,10 @@ public class OfertaService implements ServiceInterface<OfertaEntity> {
         Long idAleatorio = listaIds.get(oRandomService.getRandomInt(0, listaIds.size() - 1));
         return oOfertaRepository.findById(idAleatorio)
                 .orElseThrow(() -> new ResourceNotFoundException("Oferta no encontrada"));
+    }
+
+    public List<OfertaEntity> getAllOrdered() {
+        return oOfertaRepository.findAll();
     }
 
 }

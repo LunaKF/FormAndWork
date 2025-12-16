@@ -1,5 +1,6 @@
 package com.proyecto.FormAndWork.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.entity.OfertaEntity;
 import com.proyecto.FormAndWork.service.OfertaService;
 
-
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/oferta")
@@ -34,27 +34,29 @@ public class oferta {
     @GetMapping("")
     public ResponseEntity<Page<OfertaEntity>> getPage(
             Pageable oPageable,
-            @RequestParam  Optional<String> filter) {
+            @RequestParam Optional<String> filter) {
         return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
-    @GetMapping("xempresa/{id}")
+    @GetMapping("xempresa/{id:[0-9]+}")
     public ResponseEntity<Page<OfertaEntity>> getPageXempresa(
             @PathVariable Long id,
             Pageable oPageable,
             @RequestParam Optional<String> filter) {
-        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXempresa(oPageable, filter, id), HttpStatus.OK);
-    } 
+        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXempresa(oPageable, filter, id),
+                HttpStatus.OK);
+    }
 
-        @GetMapping("xsector/{id}")
+    @GetMapping("xsector/{id:[0-9]+}")
     public ResponseEntity<Page<OfertaEntity>> getPageXsector(
             @PathVariable Long id,
             Pageable oPageable,
             @RequestParam Optional<String> filter) {
-        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
-    } 
+        return new ResponseEntity<Page<OfertaEntity>>(oOfertaService.getPageXsector(oPageable, filter, id),
+                HttpStatus.OK);
+    }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<OfertaEntity> getOferta(@PathVariable Long id) {
         return new ResponseEntity<OfertaEntity>(oOfertaService.get(id), HttpStatus.OK);
     }
@@ -64,32 +66,31 @@ public class oferta {
         return new ResponseEntity<Long>(oOfertaService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oOfertaService.delete(id), HttpStatus.OK);
     }
 
-@PostMapping("") // Crear
-public ResponseEntity<OfertaEntity> create(@RequestBody OfertaEntity oOfertaEntity) {
-    return new ResponseEntity<>(oOfertaService.create(oOfertaEntity), HttpStatus.CREATED);
-}
+    @PostMapping("") // Crear
+    public ResponseEntity<OfertaEntity> create(@RequestBody OfertaEntity oOfertaEntity) {
+        return new ResponseEntity<>(oOfertaService.create(oOfertaEntity), HttpStatus.CREATED);
+    }
 
-@PutMapping("/{id}") // Actualizar
-public ResponseEntity<OfertaEntity> update(@PathVariable Long id, @RequestBody OfertaEntity oOfertaEntity) {
-    oOfertaEntity.setId(id);
-    return new ResponseEntity<>(oOfertaService.update(oOfertaEntity), HttpStatus.OK);
-}
+    @PutMapping("/{id:[0-9]+}") // Actualizar
+    public ResponseEntity<OfertaEntity> update(@PathVariable Long id, @RequestBody OfertaEntity oOfertaEntity) {
+        oOfertaEntity.setId(id);
+        return new ResponseEntity<>(oOfertaService.update(oOfertaEntity), HttpStatus.OK);
+    }
 
-
-@PostMapping("/random/{cantidad}")
+    @PostMapping("/random/{cantidad}")
     public ResponseEntity<Long> randomCreate(@PathVariable Long cantidad) {
         return new ResponseEntity<Long>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
     }
 
-@PutMapping("/random/{cantidad}")
-public ResponseEntity<Long> randomCreatePut(@PathVariable Long cantidad) {
-    return new ResponseEntity<>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
-}
+    @PutMapping("/random/{cantidad}")
+    public ResponseEntity<Long> randomCreatePut(@PathVariable Long cantidad) {
+        return new ResponseEntity<>(oOfertaService.randomCreate(cantidad), HttpStatus.OK);
+    }
 
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
@@ -97,5 +98,8 @@ public ResponseEntity<Long> randomCreatePut(@PathVariable Long cantidad) {
     }
 
 
-
+        @GetMapping("/all")
+    public ResponseEntity<List<OfertaEntity>> getAll() {
+    return new ResponseEntity<>(oOfertaService.getAllOrdered(), HttpStatus.OK);
+    }
 }

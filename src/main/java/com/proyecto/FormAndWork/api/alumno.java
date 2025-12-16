@@ -44,7 +44,7 @@ public class alumno {
         return new ResponseEntity<Page<AlumnoEntity>>(oAlumnoService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<AlumnoEntity> getAlumno(@PathVariable Long id) {
         return new ResponseEntity<AlumnoEntity>(oAlumnoService.get(id), HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class alumno {
         return new ResponseEntity<Long>(oAlumnoService.count(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<Long>(oAlumnoService.delete(id), HttpStatus.OK);
     }
@@ -78,6 +78,12 @@ public class alumno {
     @DeleteMapping("/all")
     public ResponseEntity<Long> deleteAll() {
         return new ResponseEntity<Long>(oAlumnoService.deleteAll(), HttpStatus.OK);
+    }
+
+    // crear un getall de alumnos sin paginacion
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<AlumnoEntity>> getAll() {
+        return new ResponseEntity<Iterable<AlumnoEntity>>(oAlumnoService.getAll(), HttpStatus.OK);
     }
 
 }
