@@ -78,8 +78,8 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
 
             String nombreCorto = e.getNombre().trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
             if (nombreCorto.length() < 3) {
-                nombreCorto = (nombreCorto + "xyz").substring(0, 3); 
-            }else {
+                nombreCorto = (nombreCorto + "xyz").substring(0, 3);
+            } else {
                 nombreCorto = nombreCorto.substring(0, 3);
             }
 
@@ -137,56 +137,59 @@ public class EmpresaService implements ServiceInterface<EmpresaEntity> {
         return 1L;
     }
 
-public EmpresaEntity create(EmpresaEntity oEmpresaEntity) {
+    public EmpresaEntity create(EmpresaEntity oEmpresaEntity) {
 
-    // ✅ VALIDACIONES mínimas
-    if (oEmpresaEntity.getNombre() == null || oEmpresaEntity.getNombre().isBlank()) {
-        throw new IllegalArgumentException("Nombre es obligatorio");
-    }
-    if (oEmpresaEntity.getEmail() == null || oEmpresaEntity.getEmail().isBlank()) {
-        throw new IllegalArgumentException("Email es obligatorio");
-    }
-    if (oEmpresaEntity.getSector() == null || oEmpresaEntity.getSector().getId() == null) {
-        throw new IllegalArgumentException("Sector es obligatorio");
-    }
+        // ✅ VALIDACIONES mínimas
+        if (oEmpresaEntity.getNombre() == null || oEmpresaEntity.getNombre().isBlank()) {
+            throw new IllegalArgumentException("Nombre es obligatorio");
+        }
+        if (oEmpresaEntity.getEmail() == null || oEmpresaEntity.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email es obligatorio");
+        }
+        if (oEmpresaEntity.getSector() == null || oEmpresaEntity.getSector().getId() == null) {
+            throw new IllegalArgumentException("Sector es obligatorio");
+        }
 
-    // ✅ Si llega sin password -> asignar una por defecto (para no romper DB)
-    if (oEmpresaEntity.getPassword() == null || oEmpresaEntity.getPassword().isBlank()) {
-        // opción simple (igual que randomCreate):
-        oEmpresaEntity.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278");
-        // (si luego quieres: aquí generamos password aleatoria + la mandamos por email)
-    }
+        // ✅ Si llega sin password -> asignar una por defecto (para no romper DB)
+        if (oEmpresaEntity.getPassword() == null || oEmpresaEntity.getPassword().isBlank()) {
+            // opción simple (igual que randomCreate):
+            oEmpresaEntity.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278");
+            // (si luego quieres: aquí generamos password aleatoria + la mandamos por email)
+        }
 
-    return oEmpresaRepository.save(oEmpresaEntity);
-}
-
-
-public EmpresaEntity update(EmpresaEntity oEmpresaEntity) {
-
-    EmpresaEntity oEmpresaEntityFromDatabase = oEmpresaRepository.findById(oEmpresaEntity.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
-
-    if (oEmpresaEntity.getNombre() != null) {
-        oEmpresaEntityFromDatabase.setNombre(oEmpresaEntity.getNombre());
+        return oEmpresaRepository.save(oEmpresaEntity);
     }
 
-    if (oEmpresaEntity.getEmail() != null) {
-        oEmpresaEntityFromDatabase.setEmail(oEmpresaEntity.getEmail());
+    public EmpresaEntity update(EmpresaEntity oEmpresaEntity) {
+
+        EmpresaEntity oEmpresaEntityFromDatabase = oEmpresaRepository.findById(oEmpresaEntity.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+
+        if (oEmpresaEntity.getNombre() != null) {
+            oEmpresaEntityFromDatabase.setNombre(oEmpresaEntity.getNombre());
+        }
+
+        if (oEmpresaEntity.getEmail() != null) {
+            oEmpresaEntityFromDatabase.setEmail(oEmpresaEntity.getEmail());
+        }
+
+        // ✅ Sector (si lo envías)
+        if (oEmpresaEntity.getSector() != null && oEmpresaEntity.getSector().getId() != null) {
+            oEmpresaEntityFromDatabase.setSector(oEmpresaEntity.getSector());
+        }
+
+        // ✅ Password: solo si llega una nueva (si no, se conserva)
+        if (oEmpresaEntity.getPassword() != null && !oEmpresaEntity.getPassword().isBlank()) {
+            oEmpresaEntityFromDatabase.setPassword(oEmpresaEntity.getPassword());
+        }
+
+        return oEmpresaRepository.save(oEmpresaEntityFromDatabase);
     }
 
-    // ✅ Sector (si lo envías)
-    if (oEmpresaEntity.getSector() != null && oEmpresaEntity.getSector().getId() != null) {
-        oEmpresaEntityFromDatabase.setSector(oEmpresaEntity.getSector());
+    public EmpresaEntity getByEmail(String email) {
+        return oEmpresaRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada por email"));
     }
-
-    // ✅ Password: solo si llega una nueva (si no, se conserva)
-    if (oEmpresaEntity.getPassword() != null && !oEmpresaEntity.getPassword().isBlank()) {
-        oEmpresaEntityFromDatabase.setPassword(oEmpresaEntity.getPassword());
-    }
-
-    return oEmpresaRepository.save(oEmpresaEntityFromDatabase);
-}
-
 
     public Long deleteAll() {
         oEmpresaRepository.deleteAll();

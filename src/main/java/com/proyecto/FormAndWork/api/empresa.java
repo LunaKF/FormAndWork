@@ -18,23 +18,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.proyecto.FormAndWork.entity.EmpresaEntity;
 import com.proyecto.FormAndWork.service.EmpresaService;
-
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/empresa")
 
 public class empresa {
+
     @Autowired
     EmpresaService oEmpresaService;
 
     @GetMapping("")
     public ResponseEntity<Page<EmpresaEntity>> getPage(
             Pageable oPageable,
-            @RequestParam  Optional<String> filter) {
+            @RequestParam Optional<String> filter) {
         return new ResponseEntity<Page<EmpresaEntity>>(oEmpresaService.getPage(oPageable, filter), HttpStatus.OK);
     }
 
@@ -44,11 +45,16 @@ public class empresa {
             Pageable oPageable,
             @RequestParam Optional<String> filter) {
         return new ResponseEntity<Page<EmpresaEntity>>(oEmpresaService.getPageXsector(oPageable, filter, id), HttpStatus.OK);
-    }   
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmpresaEntity> getEmpresa(@PathVariable Long id) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.get(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<EmpresaEntity> getEmpresaByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(oEmpresaService.getByEmail(email), HttpStatus.OK);
     }
 
     @GetMapping("/count")
@@ -61,12 +67,12 @@ public class empresa {
         return new ResponseEntity<Long>(oEmpresaService.delete(id), HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<EmpresaEntity> create(@RequestBody EmpresaEntity oEmpresaEntity) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.create(oEmpresaEntity), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<EmpresaEntity> update(@RequestBody EmpresaEntity oEmpresaEntity) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.update(oEmpresaEntity), HttpStatus.OK);
     }
@@ -83,7 +89,7 @@ public class empresa {
 
     @GetMapping("/all")
     public ResponseEntity<List<EmpresaEntity>> getAll() {
-    return new ResponseEntity<>(oEmpresaService.getAllOrdered(), HttpStatus.OK);
+        return new ResponseEntity<>(oEmpresaService.getAllOrdered(), HttpStatus.OK);
     }
 
 }
