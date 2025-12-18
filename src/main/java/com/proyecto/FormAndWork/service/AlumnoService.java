@@ -34,78 +34,63 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
 
     // Nombres inclusivos y de muchas nacionalidades
     private final String[] arrNombres = {
-            // Españoles y latinos
-            "Pepe", "Laura", "Ignacio", "María", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
-            "Ana", "Rafa", "Manolo", "Lucía", "Marta", "Sara", "Rocío", "Diego", "Andrés", "Clara",
-            "Valentina", "Camila", "Mateo", "Sofía", "Juan", "Isabella", "Emilio", "Fernanda",
-
-            // Anglosajones
-            "John", "Emily", "Michael", "Jessica", "William", "Olivia", "James", "Emma",
-            "Robert", "Sophia", "David", "Isabel", "Daniel", "Chloe", "Andrew", "Madison",
-            "Alex", "Taylor", "Jordan", "Sam", "Casey", "Jamie",
-
-            // Franceses
-            "Pierre", "Marie", "Jean", "Camille", "Élise", "Antoine", "Luc", "Nathalie", "François",
-            "Juliette", "Chloé", "Mathieu", "Amélie", "Noémie", "Sophie",
-
-            // Alemanes
-            "Hans", "Greta", "Lukas", "Katrin", "Karl", "Anja", "Stefan", "Marta", "Heinrich", "Lena",
-
-            // Italianos
-            "Giovanni", "Alessandro", "Francesca", "Giulia", "Marco", "Sabrina", "Luca", "Matteo",
-            "Chiara", "Andrea", "Federica", "Raffaele",
-
-            // Árabes
-            "Mohammed", "Aisha", "Fatima", "Ali", "Omar", "Layla", "Yusuf", "Khalid", "Samira",
-            "Hassan", "Mariam", "Abdul", "Nadia", "Karim", "Iman",
-
-            // Africanos
-            "Kwame", "Ama", "Ayo", "Zuri", "Nia", "Taye", "Chinua", "Oba", "Lamine", "Fatou", "Aminata",
-            "Malik", "Kofi", "Adama", "Sefu",
-
-            // Asiáticos
-            "Hiroshi", "Yuki", "Sakura", "Kenji", "Haruto", "Aya", "Takumi", "Mei", "Wei", "Xiao",
-            "Jin", "Hana", "Min", "Soo", "Jihoon", "Akira",
-
-            // Nombres neutros/unisex
-            "Alex", "Sky", "River", "Taylor", "Morgan", "Casey", "Sam", "Charlie", "Jordan", "Dakota",
-            "Robin", "Reese", "Elliot"
+        // Españoles y latinos
+        "Pepe", "Laura", "Ignacio", "María", "Lorenzo", "Carmen", "Rosa", "Paco", "Luis",
+        "Ana", "Rafa", "Manolo", "Lucía", "Marta", "Sara", "Rocío", "Diego", "Andrés", "Clara",
+        "Valentina", "Camila", "Mateo", "Sofía", "Juan", "Isabella", "Emilio", "Fernanda",
+        // Anglosajones
+        "John", "Emily", "Michael", "Jessica", "William", "Olivia", "James", "Emma",
+        "Robert", "Sophia", "David", "Isabel", "Daniel", "Chloe", "Andrew", "Madison",
+        "Alex", "Taylor", "Jordan", "Sam", "Casey", "Jamie",
+        // Franceses
+        "Pierre", "Marie", "Jean", "Camille", "Élise", "Antoine", "Luc", "Nathalie", "François",
+        "Juliette", "Chloé", "Mathieu", "Amélie", "Noémie", "Sophie",
+        // Alemanes
+        "Hans", "Greta", "Lukas", "Katrin", "Karl", "Anja", "Stefan", "Marta", "Heinrich", "Lena",
+        // Italianos
+        "Giovanni", "Alessandro", "Francesca", "Giulia", "Marco", "Sabrina", "Luca", "Matteo",
+        "Chiara", "Andrea", "Federica", "Raffaele",
+        // Árabes
+        "Mohammed", "Aisha", "Fatima", "Ali", "Omar", "Layla", "Yusuf", "Khalid", "Samira",
+        "Hassan", "Mariam", "Abdul", "Nadia", "Karim", "Iman",
+        // Africanos
+        "Kwame", "Ama", "Ayo", "Zuri", "Nia", "Taye", "Chinua", "Oba", "Lamine", "Fatou", "Aminata",
+        "Malik", "Kofi", "Adama", "Sefu",
+        // Asiáticos
+        "Hiroshi", "Yuki", "Sakura", "Kenji", "Haruto", "Aya", "Takumi", "Mei", "Wei", "Xiao",
+        "Jin", "Hana", "Min", "Soo", "Jihoon", "Akira",
+        // Nombres neutros/unisex
+        "Alex", "Sky", "River", "Taylor", "Morgan", "Casey", "Sam", "Charlie", "Jordan", "Dakota",
+        "Robin", "Reese", "Elliot"
     };
 
     // Apellidos internacionales
     private final String[] arrApellidos = {
-            // Españoles y latinos
-            "Sancho", "Gómez", "Pérez", "Rodríguez", "García", "Fernández", "López", "Martínez", "Sánchez",
-            "González", "Jiménez", "Ruiz", "Moreno", "Castro", "Silva", "Torres", "Vega", "Delgado",
-            "Muñoz", "Ramos", "Navarro", "Cabrera",
-
-            // Anglosajones
-            "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Taylor", "Anderson",
-            "Thomas", "Moore", "Jackson", "White", "Harris", "Clark", "Lewis", "Walker", "Allen",
-
-            // Franceses
-            "Dubois", "Moreau", "Laurent", "Lefevre", "Simon", "Michel", "Garcia", "Noel", "Chevalier",
-            "Fontaine", "Blanc", "Dupont", "Renard",
-
-            // Alemanes
-            "Schmidt", "Müller", "Schneider", "Fischer", "Weber", "Klein", "Wagner", "Becker",
-            "Hoffmann", "Bauer", "Keller", "Schulz",
-
-            // Italianos
-            "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi", "Romano", "Colombo", "Ricci",
-            "Greco", "Marino", "Bruno", "Gallo",
-
-            // Árabes
-            "Al-Farsi", "Haddad", "Abdallah", "Rahman", "Nasser", "Hussein", "Farouk", "Karim",
-            "Othman", "Bakr", "Saidi", "Zayed", "Salem",
-
-            // Africanos
-            "Okafor", "Mensah", "Diop", "Kamara", "Diallo", "Traoré", "Mwangi", "Ndlovu", "Chukwu",
-            "Koulibaly", "Obi", "Zulu", "Adebayo",
-
-            // Asiáticos
-            "Tanaka", "Suzuki", "Kobayashi", "Matsumoto", "Nakamura", "Kim", "Park", "Lee",
-            "Choi", "Nguyen", "Tran", "Pham", "Wang", "Zhang", "Zhao", "Chen", "Huang"
+        // Españoles y latinos
+        "Sancho", "Gómez", "Pérez", "Rodríguez", "García", "Fernández", "López", "Martínez", "Sánchez",
+        "González", "Jiménez", "Ruiz", "Moreno", "Castro", "Silva", "Torres", "Vega", "Delgado",
+        "Muñoz", "Ramos", "Navarro", "Cabrera",
+        // Anglosajones
+        "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Taylor", "Anderson",
+        "Thomas", "Moore", "Jackson", "White", "Harris", "Clark", "Lewis", "Walker", "Allen",
+        // Franceses
+        "Dubois", "Moreau", "Laurent", "Lefevre", "Simon", "Michel", "Garcia", "Noel", "Chevalier",
+        "Fontaine", "Blanc", "Dupont", "Renard",
+        // Alemanes
+        "Schmidt", "Müller", "Schneider", "Fischer", "Weber", "Klein", "Wagner", "Becker",
+        "Hoffmann", "Bauer", "Keller", "Schulz",
+        // Italianos
+        "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi", "Romano", "Colombo", "Ricci",
+        "Greco", "Marino", "Bruno", "Gallo",
+        // Árabes
+        "Al-Farsi", "Haddad", "Abdallah", "Rahman", "Nasser", "Hussein", "Farouk", "Karim",
+        "Othman", "Bakr", "Saidi", "Zayed", "Salem",
+        // Africanos
+        "Okafor", "Mensah", "Diop", "Kamara", "Diallo", "Traoré", "Mwangi", "Ndlovu", "Chukwu",
+        "Koulibaly", "Obi", "Zulu", "Adebayo",
+        // Asiáticos
+        "Tanaka", "Suzuki", "Kobayashi", "Matsumoto", "Nakamura", "Kim", "Park", "Lee",
+        "Choi", "Nguyen", "Tran", "Pham", "Wang", "Zhang", "Zhao", "Chen", "Huang"
     };
 
     public Page<AlumnoEntity> getPage(Pageable oPageable, Optional<String> filter) {
@@ -251,11 +236,33 @@ public class AlumnoService implements ServiceInterface<AlumnoEntity> {
     }
 
     public AlumnoEntity create(AlumnoEntity oAlumnoEntity) {
-        if (oAuthService.isAdmin()) {
-            return oAlumnoRepository.save(oAlumnoEntity);
-        } else {
+        if (!oAuthService.isAdmin()) {
             throw new UnauthorizedAccessException("No tienes permisos para crear el usuario");
         }
+
+        // ✅ VALIDACIONES mínimas (opcional pero recomendable)
+        if (oAlumnoEntity.getNombre() == null || oAlumnoEntity.getNombre().isBlank()) {
+            throw new IllegalArgumentException("Nombre es obligatorio");
+        }
+        if (oAlumnoEntity.getApe1() == null || oAlumnoEntity.getApe1().isBlank()) {
+            throw new IllegalArgumentException("Apellido 1 es obligatorio");
+        }
+        if (oAlumnoEntity.getApe2() == null || oAlumnoEntity.getApe2().isBlank()) {
+            throw new IllegalArgumentException("Apellido 2 es obligatorio");
+        }
+        if (oAlumnoEntity.getEmail() == null || oAlumnoEntity.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email es obligatorio");
+        }
+        if (oAlumnoEntity.getSector() == null || oAlumnoEntity.getSector().getId() == null) {
+            throw new IllegalArgumentException("Sector es obligatorio");
+        }
+
+        // ✅ CLAVE: si llega sin password, asignar una por defecto (igual que randomCreate)
+        if (oAlumnoEntity.getPassword() == null || oAlumnoEntity.getPassword().isBlank()) {
+            oAlumnoEntity.setPassword("ca20cffd89c01dd095d145f54aa6a2bdb4aead6eaefc1f32d573568659ae8278"); // 12345@
+        }
+
+        return oAlumnoRepository.save(oAlumnoEntity);
     }
 
     public AlumnoEntity update(AlumnoEntity oAlumnoEntity) {
