@@ -67,12 +67,12 @@ public class empresa {
         return new ResponseEntity<Long>(oEmpresaService.delete(id), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PutMapping("")
     public ResponseEntity<EmpresaEntity> create(@RequestBody EmpresaEntity oEmpresaEntity) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.create(oEmpresaEntity), HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PostMapping("")
     public ResponseEntity<EmpresaEntity> update(@RequestBody EmpresaEntity oEmpresaEntity) {
         return new ResponseEntity<EmpresaEntity>(oEmpresaService.update(oEmpresaEntity), HttpStatus.OK);
     }
